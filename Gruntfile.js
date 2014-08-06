@@ -18,35 +18,23 @@ module.exports = function (grunt) {
     this.registerTask('server', ['build', 'tests', 'connect', 'watch:server']);
 
     // Build test files
-    this.registerTask('tests', 'Builds the test package', ['concat:deps', 'browserify:tests',
-        'transpile:testsAmd', 'transpile:testsCommonjs', 'buildTests:dist'
-    ]);
+    this.registerTask('tests', 'Builds the test package', ['transpile:testsAmd', 'buildTests:dist']);
 
     // Build a new version of the modules
     this.registerTask('build', 'Builds a distributable version of <%= cfg.name %>', [
         'clean',
+        'jshint',
         'transpile:amd',
-        'transpile:commonjs',
         'concat:amd',
-        'concat:browser',
-        'traceur:browser',
-        'traceur:amd',
-        'traceur:amdNoVersion',
-        'browser:dist',
-        'uglify:browser',
+        'concat:vendor',
         'uglify:amd',
-        'copy'
+        'uglify:vendor'
     ]);
 
     // Custom phantomjs test task
-    this.registerTask('test:phantom', "Runs tests through the command line using PhantomJS", [
-        'build', 'tests', 'mocha_phantomjs'
-    ]);
 
     // Custom Node test task
-    this.registerTask('test:node', ['build', 'tests', 'mochaTest']);
-
-    this.registerTask('test', ['build', 'tests', 'mocha_phantomjs', 'mochaTest']);
+    this.registerTask('test', ['build', 'tests', 'mochaTest']);
 
     // Custom YUIDoc task
     this.registerTask('docs', ['yuidoc']);
@@ -55,8 +43,6 @@ module.exports = function (grunt) {
     config.pkg = grunt.file.readJSON('package.json');
 
     // Load custom tasks from NPM
-    grunt.loadNpmTasks('grunt-browserify');
-    grunt.loadNpmTasks('grunt-mocha-phantomjs');
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
 

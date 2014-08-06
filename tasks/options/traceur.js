@@ -15,18 +15,11 @@ module.exports = function (grunt) {
         files['dist/' + module.name + '.amd.js'] = ['tmp/' + module.name + '.amd.js'];
     });
     return {
-        browser: {
-            files: {
-                'dist/browser.js': ['tmp/modules.browser1.js']
-            }
-        },
         amd: {
-            files: files
+            files: files,
         },
-        amdNoVersion: {
-            files: {
-                'dist/modules.amd.js': ['tmp/modules.amd.js']
-            }
+        options : {
+        	sourceMaps:true
         }
     };
 }

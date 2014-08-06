@@ -3,6 +3,6 @@ module.exports = {
     'jshintrc': '.jshintrc'
   },
   output: {
-    src: ['dist/modules-<%= pkg.version %>.js']
+    src: ['<%=pkg.root%>/**/*.js']
   }
 };

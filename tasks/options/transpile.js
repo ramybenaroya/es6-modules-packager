@@ -15,26 +15,10 @@ module.exports = {
     type: 'amd',
     files: [{
       expand: true,
-      cwd: 'app/root/',
+      cwd: '<%=pkg.root%>/',
       src: ['**/*.js'],
-      dest: 'tmp/',
+      dest: 'tmp/root',
       ext: '.amd.js'
-    }]
-  },
-
-  commonjs: {
-    moduleName: nameFor,
-    type: 'cjs',
-    files: [{
-      expand: true,
-      cwd: 'app/root/',
-      src: ['modules/*.js'],
-      dest: 'dist/commonjs/',
-      ext: '.js'
-    },
-    {
-      src: ['app/root/*.js'],
-      dest: 'dist/commonjs/main.js'
     }]
   },
 
@@ -43,12 +27,5 @@ module.exports = {
     type: 'amd',
     src: ['test/test_helpers.js', 'test/tests.js', 'test/tests/**/*_test.js'],
     dest: 'tmp/tests.amd.js'
-  },
-
-  testsCommonjs: {
-    moduleName: nameFor,
-    type: 'cjs',
-    src: ['test/test_helpers.js', 'test/tests.js', 'test/tests/**/*_test.js'],
-    dest: 'tmp/tests.cjs.js'
   }
 };

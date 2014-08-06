@@ -1,10 +1,13 @@
 [{
 	"name": "package-a",
-	"files": ["folder-a/module-1", "folder-b/module-3"]
-}, {
+	"files": ["package-a", "folder-a/module-1", "package-a-init"]
+},{
 	"name": "package-b",
 	"files": ["folder-a/module-2", "folder-b/module-4"]
 }, {
 	"name": "package-c",
 	"files": ["folder-c/**/*"]
+},{
+	"name" : "folder-a/module-2",
+	"files": ["folder-a/module-2"]
 }]

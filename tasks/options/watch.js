@@ -1,6 +1,6 @@
 module.exports = {
 	server: {
-		files: ['app/root/**/*.js', 'vendor/**/*.js', 'test/**/*.js'],
+		files: ['<%=pkg.root%>/**/*.js', 'vendor/**/*.js', 'test/**/*.js'],
 		tasks: ['build', 'tests']
 	}
 };

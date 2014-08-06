@@ -8,20 +8,18 @@
 
 module.exports = function (grunt) {
     var modules = grunt.file.readJSON('modules.json'),
-        files = {};
+        vendors = grunt.file.readJSON('vendors.json'),
+        files = {},
+        vendorFiles = {};
     modules.forEach(function (module) {
         var src = [];
         files['dist/' + module.name + '.amd.min.js'] = ['dist/' + module.name + '.amd.js'];
     });
+    vendors.forEach(function (vendor) {
+        var src = [];
+        vendorFiles['dist/vendor/' + vendor.name + '.min.js'] = ['dist/vendor/' + vendor.name + '.js'];
+    });
     return {
-        browser: {
-            options: {
-                mangle: true
-            },
-            files: {
-                'dist/modules-<%= pkg.version %>.min.js': ['dist/modules-<%= pkg.version %>.js'],
-            }
-        },
         amd: {
             options: {
                 mangle: true,
@@ -30,13 +28,12 @@ module.exports = function (grunt) {
             },
             files: files
         },
-        browserNoVersion: {
+        vendor : {
             options: {
-                mangle: true
+                mangle: true,
+                sourceMap: true
             },
-            files: {
-                'dist/modules.min.js': ['dist/modules.js'],
-            }
+            files : vendorFiles  
         }
     };
 }
