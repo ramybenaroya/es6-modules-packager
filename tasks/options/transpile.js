@@ -18,7 +18,7 @@ module.exports = {
       cwd: '<%=pkg.root%>/',
       src: ['**/*.js'],
       dest: 'tmp/root',
-      ext: '.amd.js'
+      ext: '.js'
     }]
   },
 

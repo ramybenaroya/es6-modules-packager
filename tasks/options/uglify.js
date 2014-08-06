@@ -3,7 +3,7 @@
 // fs.readdirSync('./app/root/modules').filter(function (file) {
 //     return fs.statSync('./app/root/modules/' + file).isDirectory();
 // }).forEach(function (file) {
-//     files['dist/' + file + '.amd.min.js'] = ['dist/' + file + '.amd.js'];
+//     files['dist/' + file + '.min.js'] = ['dist/' + file + '.js'];
 // });
 
 module.exports = function (grunt) {
@@ -13,7 +13,7 @@ module.exports = function (grunt) {
         vendorFiles = {};
     modules.forEach(function (module) {
         var src = [];
-        files['dist/' + module.name + '.amd.min.js'] = ['dist/' + module.name + '.amd.js'];
+        files['dist/' + module.name + '.min.js'] = ['dist/' + module.name + '.js'];
     });
     vendors.forEach(function (vendor) {
         var src = [];

@@ -9,17 +9,16 @@
 		
 	</head>
 	<body>
-		<script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.14/require.js"></script>
 		<script src="/app/loader/loader.js"></script>
-		<script src="/dist/vendor/vendor-a.js"></script>
-		<script src="/dist/package-a.amd.js"></script>
 		<script>
-			window.requirejs.config({
+			require.config({
 				baseUrl: "/dist/"
 			});
-			require('package-a-init').done(function(package){
-				package['default'].init();	
+			require(['vendor/vendor-a', 'package-a'], function(){
+				require('package-a-init').done(function(initializer){
+					initializer['default'].init();
+				});
 			});
 		</script>
 	</body>

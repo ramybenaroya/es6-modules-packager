@@ -1,4 +1,4 @@
 [{
 	"name": "vendor-a",
-	"files": ["vendor-1", "vendor-2"]
+	"files": ["jquery", "vendor-1", "vendor-2"]
 }]

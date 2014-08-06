@@ -3,7 +3,7 @@
 // fs.readdirSync('./app/root/modules').filter(function (file) {
 //     return fs.statSync('./app/root/modules/' + file).isDirectory();
 // }).forEach(function (file) {
-//     files['tmp/' + file + '.amd.js'] = ['tmp/modules/' + file + '/**/*.amd.js'];
+//     files['tmp/' + file + '.js'] = ['tmp/modules/' + file + '/**/*.js'];
 // });
 
 // var modules = grunt.file.readJSON('modules.json');
@@ -11,9 +11,9 @@
 // modules.forEach(function(module){
 //     var src = [];
 //     modules.files.forEach(function(file){
-//         src.push('tmp/modules/' + file + '.amd.js');
+//         src.push('tmp/modules/' + file + '.js');
 //     });
-//     files['tmp/' + file + '.amd.js'] = src;
+//     files['tmp/' + file + '.js'] = src;
 // });
 
 module.exports = function (grunt) {
@@ -25,9 +25,9 @@ module.exports = function (grunt) {
 	modules.forEach(function (module) {
 		var src = [];
 		module.files.forEach(function (file) {
-			src.push('tmp/root/' + file + '.amd.js');
+			src.push('tmp/root/' + file + '.js');
 		});
-		files['dist/' + module.name + '.amd.js'] = src;
+		files['dist/' + module.name + '.js'] = src;
 	});
 	vendors.forEach(function (vendor) {
 		var src = [];
@@ -39,7 +39,8 @@ module.exports = function (grunt) {
 
 	return {
 		options: {
-			sourceMap: true
+			sourceMap: true,
+			separator: ';\n'
 		},
 		amd: {
 			files: files,
