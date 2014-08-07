@@ -3,7 +3,7 @@ module.exports = {
     src: [
       'test/vendor/assert.js',
       'test/test-adapter.js',
-      'tmp/tests.cjs.js'
+      'transpiled/tests.cjs.js'
     ],
     options: {
       reporter: 'spec'

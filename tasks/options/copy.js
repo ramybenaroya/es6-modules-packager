@@ -2,7 +2,7 @@ module.exports = {
 	main: {
 		files: [{
 			expand: true,
-			src: ['tmp/*.map'],
+			src: ['transpiled/**/.js'],
 			dest: 'dist/',
 			filter: 'isFile',
 			flatten: true

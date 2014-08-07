@@ -1,31 +1,41 @@
 function nameFor(path) {
-  var result,  match;
-  if (match = path.match(/^(?:root|test|test\/tests)\/(.*?)(?:\.js)?$/)) {
-    result = match[1];
-  } else {
-    result = path;
-  }
-
-  return path;
+	var result, match;
+	if (match = path.match(/^(?:root|test|test\/tests)\/(.*?)(?:\.js)?$/)) {
+		result = match[1];
+	} else {
+		result = path;
+	}
+	return path;
 }
 
 module.exports = {
-  amd: {
-    moduleName: nameFor,
-    type: 'amd',
-    files: [{
-      expand: true,
-      cwd: '<%=pkg.root%>/',
-      src: ['**/*.js'],
-      dest: 'tmp/root',
-      ext: '.js'
-    }]
-  },
+	prod: {
+		moduleName: nameFor,
+		type: 'amd',
+		files: [{
+			expand: true,
+			cwd: '<%=pkg.root%>/',
+			src: ['**/*.js'],
+			dest: 'transpiled',
+			ext: '.js'
+		}]
+	},
+	dev: {
+		moduleName: nameFor,
+		type: 'amd',
+		files: [{
+			expand: true,
+			cwd: '<%=pkg.root%>/',
+			src: ['**/*.js'],
+			dest: 'dist',
+			ext: '.js'
+		}]
+	},
 
-  testsAmd: {
-    moduleName: nameFor,
-    type: 'amd',
-    src: ['test/test_helpers.js', 'test/tests.js', 'test/tests/**/*_test.js'],
-    dest: 'tmp/tests.amd.js'
-  }
+	testsAmd: {
+		moduleName: nameFor,
+		type: 'amd',
+		src: ['test/test_helpers.js', 'test/tests.js', 'test/tests/**/*_test.js'],
+		dest: 'transpiled/tests.amd.js'
+	}
 };

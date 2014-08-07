@@ -11,15 +11,16 @@
 	<body>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.14/require.js"></script>
 		<script src="/app/loader/loader.js"></script>
+		<script src="/dist/vendor/vendor-a.js"></script>
+		<script src="/dist/package-a.js"></script>
 		<script>
 			require.config({
-				baseUrl: "/dist/"
+				baseUrl: "/dist"
 			});
-			require(['vendor/vendor-a', 'package-a'], function(){
-				require('package-a-init').done(function(initializer){
-					initializer['default'].init();
-				});
-			});
+			require('package-a', function(){
+				debugger;
+				this['default'].init();	
+			})
 		</script>
 	</body>
 </html>

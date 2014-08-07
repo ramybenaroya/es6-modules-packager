@@ -1,4 +1,4 @@
-(function (global) {
+(function (globals) {
 
 	function isArray(arr) {
 		return Object.prototype.toString.call(arr) === '[object Array]';
@@ -129,7 +129,7 @@
 				},
 
 				promise: function (obj) {
-					if (obj == null) {
+					if (obj === null) {
 						return promise;
 					} else {
 						for (var i in promise) {
@@ -144,7 +144,7 @@
 				},
 
 				debug: function () {
-					console.log('[debug]', doneFuncs, failFuncs, status);
+					globals.console.log('[debug]', doneFuncs, failFuncs, status);
 				},
 
 				isRejected: function () {
@@ -154,7 +154,7 @@
 				isResolved: function () {
 					return status === 'resolved';
 				},
-
+				/*jshint unused:true */
 				pipe: function (done, fail, progress) {
 					return D(function (def) {
 						foreach(done, function (func) {
@@ -197,7 +197,8 @@
 				resolveWith: function (context) {
 					if (status === 'pending') {
 						status = 'resolved';
-						var args = resultArgs = (arguments.length > 1) ? arguments[1] : [];
+						var args = (arguments.length > 1) ? arguments[1] : [];
+						resultArgs = args;
 						for (var i = 0; i < doneFuncs.length; i++) {
 							doneFuncs[i].apply(context, args);
 						}
@@ -208,7 +209,8 @@
 				rejectWith: function (context) {
 					if (status === 'pending') {
 						status = 'rejected';
-						var args = resultArgs = (arguments.length > 1) ? arguments[1] : [];
+						var args = (arguments.length > 1) ? arguments[1] : [];
+						resultArgs = args;
 						for (var i = 0; i < failFuncs.length; i++) {
 							failFuncs[i].apply(context, args);
 						}
@@ -218,7 +220,8 @@
 
 				notifyWith: function (context) {
 					if (status === 'pending') {
-						var args = resultArgs = (arguments.length > 1) ? arguments[1] : [];
+						var args = (arguments.length > 1) ? arguments[1] : [];
+						resultArgs = args;
 						for (var i = 0; i < progressFuncs.length; i++) {
 							progressFuncs[i].apply(context, args);
 						}
@@ -237,7 +240,7 @@
 				notify: function () {
 					return this.notifyWith(this, arguments);
 				}
-			}
+			};
 
 		var obj = promise.promise(deferred);
 
@@ -261,45 +264,48 @@
 				var df = D(),
 					size = args.length,
 					done = 0,
-					rp = new Array(size); // resolve params: params of each resolve, we need to track down them to be able to pass them in the correct order if the master needs to be resolved
+					rp = new Array(size), // resolve params: params of each resolve, we need to track down them to be able to pass them in the correct order if the master needs to be resolved
+					Deferred = globals.Deffered;
 
 				for (var i = 0; i < args.length; i++) {
-					(function (j) {
-						var obj = null;
-
-						if (args[j].done) {
-							args[j].done(function () {
-								rp[j] = (arguments.length < 2) ? arguments[0] : arguments;
-								if (++done == size) {
-									df.resolve.apply(df, rp);
-								}
-							})
-								.fail(function () {
-									df.reject(arguments);
-								});
-						} else {
-							obj = args[j];
-							args[j] = new Deferred();
-
-							args[j].done(function () {
-								rp[j] = (arguments.length < 2) ? arguments[0] : arguments;
-								if (++done == size) {
-									df.resolve.apply(df, rp);
-								}
-							})
-								.fail(function () {
-									df.reject(arguments);
-								}).resolve(obj);
-						}
-					})(i);
+					loop(i);
 				}
 
 				return df.promise();
+
+				function loop(j) {
+					var obj = null;
+
+					if (args[j].done) {
+						args[j].done(function () {
+							rp[j] = (arguments.length < 2) ? arguments[0] : arguments;
+							if (++done === size) {
+								df.resolve.apply(df, rp);
+							}
+						})
+							.fail(function () {
+								df.reject(arguments);
+							});
+					} else {
+						obj = args[j];
+						args[j] = new Deferred();
+
+						args[j].done(function () {
+							rp[j] = (arguments.length < 2) ? arguments[0] : arguments;
+							if (++done === size) {
+								df.resolve.apply(df, rp);
+							}
+						})
+							.fail(function () {
+								df.reject(arguments);
+							}).resolve(obj);
+					}
+				}
 			})(arguments);
 		}
-	}
+	};
 
-	global.Deferred = D;
+	globals.Deferred = D;
 })(window);
 
 
@@ -319,27 +325,25 @@
 			seen = {};
 
 		define = function (name, deps, callback) {
-			var depsLength = deps ? deps.length : 0,
-				args;
-			if (deps && depsLength > 0 && deps[depsLength - 1] === 'exports') {
-				registry[name] = {
-					deps: deps,
-					callback: callback
-				};
-			} else if (requirejsFallback) {
-				args = Array.prototype.slice.call(arguments, 0);
-				definejs.apply(this, args);
-			}
+			registry[name] = {
+				deps: deps,
+				callback: callback
+			};
 		};
 
-		require = function (name) {
+		require = function (name, onResolve) {
 			var args, $deferred, $promise;
-			if (requirejsFallback && typeof name !== "string") {
+			if (requirejsFallback && typeof name !== 'string') {
 				args = Array.prototype.slice.call(arguments, 0);
 				return requirejs.apply(this, args);
 			}
-			$deferred = new Deferred();
+			$deferred = new globals.Deferred();
 			$promise = $deferred.promise();
+			$promise.done(function (resolved) {
+				if (typeof onResolve === 'function') {
+					onResolve.call(resolved, [resolved]);
+				}
+			});
 			if (seen[name]) {
 				$deferred.resolve(seen[name]);
 				return $promise;
@@ -347,76 +351,79 @@
 			if (!registry[name]) {
 				if (requirejsFallback) {
 					args = Array.prototype.slice.call(arguments, 0);
-					requirejs.call(this, [name], function (resolved) {
-						if (resolved) {
-							resolved = resolved["default"] ? resolved : {
-								"default": resolved
-							};
-							$deferred.resolve(resolved);
-						} else {
-							require(name).done(function (result) {
-								$deferred.resolve(result);
+					requirejs.call(this, [name], function () {
+						if (registry[name]) {
+							require(name).done(function (resolved) {
+								$deferred.resolve(resolved);
 							});
 						}
 					});
 					return $promise;
 				} else {
 					$deferred.reject();
-					throw new Error("Could not find module " + name);
+					throw new Error('Could not find module ' + name);
 				}
 			}
 			seen[name] = {};
-			var mod = registry[name],
-				deps = mod.deps,
-				callback = mod.callback,
-				reified = [],
-				exports,
-				$loopDeferred = new Deferred(),
-				count = 0,
-				self = this,
-				eachDep = function (i) {
-					require(resolve(deps[i])).done(function (toPush) {
-						reified[i] = toPush;
+			resolveDeps();
+			return $promise;
+
+
+			function resolveDeps() {
+				var mod = registry[name],
+					deps = mod.deps,
+					callback = mod.callback,
+					reified = [],
+					exports,
+					$loopDeferred = new globals.Deferred(),
+					count = 0,
+					self = this,
+					eachDep = function (i) {
+						require(resolve(deps[i])).done(function (toPush) {
+							reified[i] = toPush;
+							count++;
+							if (count === l) {
+								$loopDeferred.resolve(reified);
+							}
+						}).fail(function () {
+							$loopDeferred.reject();
+						});
+					};
+				for (var i = 0, l = deps.length; i < l; i++) {
+					if (deps[i] === 'exports') {
+						exports = {};
+						reified[i] = exports;
 						count++;
 						if (count === l) {
 							$loopDeferred.resolve(reified);
 						}
-					}).fail(function () {
-						$loopDeferred.reject();
-					});
-				};
-			for (var i = 0, l = deps.length; i < l; i++) {
-				if (deps[i] === 'exports') {
-					exports = {};
-					reified[i] = exports;
-					count++;
-					if (count === l) {
-						$loopDeferred.resolve(reified);
+					} else {
+						eachDep(i);
 					}
-				} else {
-					eachDep(i);
 				}
-			}
 
-			if (l === 0) {
-				$loopDeferred.resolve(reified);
-			}
+				if (l === 0) {
+					$loopDeferred.resolve(reified);
+				}
 
-			$loopDeferred.promise().done(function (reified) {
-				var value = callback.apply(self, reified);
-				seen[name] = exports || value;
-				$deferred.resolve(seen[name]);
-			}).fail(function () {
-				$deferred.reject();
-			});
-			return $promise;
+				$loopDeferred.promise().done(function (reified) {
+					var value = callback.apply(self, reified);
+					seen[name] = exports || value;
+					if (registry[name].deps[registry[name].deps.length - 1] !== 'exports') {
+						seen[name]['default'] = seen[name];
+					}
+					$deferred.resolve(seen[name]);
+				}).fail(function () {
+					$deferred.reject();
+				});
+			}
 
 			function resolve(child) {
 				if (child.charAt(0) !== '.') {
 					return child;
 				}
-				var parts = child.split("/");
-				var parentBase = name.split("/").slice(0, -1);
+				var parts = child.split('/');
+				var parentBase = name.split('/').slice(0, -1);
 
 				for (var i = 0, l = parts.length; i < l; i++) {
 					var part = parts[i];
@@ -430,7 +437,7 @@
 					}
 				}
 
-				return parentBase.join("/");
+				return parentBase.join('/');
 			}
 		};
 
