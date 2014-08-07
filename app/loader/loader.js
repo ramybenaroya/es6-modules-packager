@@ -440,11 +440,15 @@
 				return parentBase.join('/');
 			}
 		};
-
-		require.entries = registry;
+		require.entries = require._eak_seen = registry;
+		require.clear = function () {
+			require.entries = require._eak_seen = registry = {};
+			seen = {};
+		};
 	})();
 
 	globals.require = require;
+	globals.requirejs = require;
 	globals.define = define;
 
 	if (requirejsFallback) {
