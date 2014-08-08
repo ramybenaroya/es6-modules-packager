@@ -1,17 +1,34 @@
 module.exports = function (grunt) {
 
-	var packagingData = grunt.file.readJSON('packaging.json'),
-		vendors = packagingData.vendors,
-		groups = packagingData.groups,
-		ignored = packagingData.ignored,
-		vendorFiles = {};
-	vendors.forEach(function (vendor) {
-		var src = [];
-		vendor.files.forEach(function (file) {
-			src.push('<%=pkg.vendor%>/' + file + '.js');
-		});
-		vendorFiles['dist/<%=pkg.vendor%>/' + vendor.name + '.js'] = src;
-	});
+	var buildData = grunt.file.readJSON('build.json'),
+		vendors = buildData.vendors,
+		groups = buildData.groups,
+		ignored = buildData.ignored,
+		rootSrcDir = buildData.rootSrcDir,
+		vendorSrcDir = buildData.vendorSrcDir,
+		modulesDistDir = buildData.modulesDistDir,
+		vendorDistDir = buildData.vendorDistDir,
+		vendorFiles = {},
+		processVendors = function(){
+			var vendor, src;
+			for (vendor in vendors){
+				src = [];
+				analyze(vendor);
+				vendorFiles[vendorDistDir + '/' + vendor + '.js'] = src;
+			}
+			function analyze(ven){
+				if (vendors[ven]){
+					vendors[ven].forEach(function (sub) {
+						if (vendors[sub]){
+							analyze(sub);
+						} else {
+							src.push(vendorSrcDir + '/' + sub + '.js');
+						}
+					});
+				}
+			}	
+		};
+	processVendors();
 
 	return {
 		options: {

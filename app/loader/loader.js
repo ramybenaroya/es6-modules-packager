@@ -322,7 +322,8 @@
 
 	(function () {
 		var registry = {},
-			seen = {};
+			seen = {},
+			locks = {};
 
 		define = function (name, deps, callback) {
 			registry[name] = {
@@ -351,13 +352,13 @@
 			if (!registry[name]) {
 				if (requirejsFallback) {
 					args = Array.prototype.slice.call(arguments, 0);
-					requirejs.call(this, [name], function () {
-						if (registry[name]) {
-							require(name).done(function (resolved) {
-								$deferred.resolve(resolved);
-							});
-						}
-					});
+					if (locks[name]) {
+						locks[name].promise().done(function(resolved) {
+							$deferred.resolve(resolved);
+						});
+					} else {
+						requireForReal();
+					}
 					return $promise;
 				} else {
 					$deferred.reject();
@@ -368,6 +369,16 @@
 			resolveDeps();
 			return $promise;
 
+			function requireForReal() {
+				locks[name] = new globals.Deferred();
+				requirejs.call(this, [name], function () {
+					if (registry[name]) {
+						require(name).done(function (resolved) {
+							$deferred.resolve(resolved);
+						});
+					}
+				});
+			}
 
 			function resolveDeps() {
 				var mod = registry[name],
@@ -407,12 +418,18 @@
 				}
 
 				$loopDeferred.promise().done(function (reified) {
-					var value = callback.apply(self, reified);
+					var value = callback.apply(self, reified),
+						nameLock;
 					seen[name] = exports || value;
 					if (registry[name].deps[registry[name].deps.length - 1] !== 'exports') {
 						seen[name]['default'] = seen[name];
 					}
 					$deferred.resolve(seen[name]);
+					if (locks[name]) {
+						nameLock = locks[name];
+						delete locks[name];
+						nameLock.resolve(seen[name]);
+					}
 				}).fail(function () {
 					$deferred.reject();
 				});

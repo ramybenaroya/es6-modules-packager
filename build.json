@@ -1,0 +1,15 @@
+{
+	"groups": ["package-a"],
+	"ignored": {
+		"jquery": true,
+		"exports": true,
+		"folder-b/module-4": true
+	},
+	"vendors": {
+		"vendor-a": ["jquery", "vendor-1", "vendor-2"]
+	},
+	"rootSrcDir" : "app/root",
+	"vendorSrcDir" : "vendor",
+	"modulesDistDir" : "dist/root",
+	"vendorDistDir": "dist/vendor"
+}

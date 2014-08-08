@@ -7,18 +7,19 @@
 // });
 
 module.exports = function (grunt) {
-    var packagingData = grunt.file.readJSON('packaging.json'),
-        vendors = packagingData.vendors,
-        groups = packagingData.groups,
-        ignored = packagingData.groups,
+    var buildData = grunt.file.readJSON('build.json'),
+        vendors = buildData.vendors,
+        groups = buildData.groups,
+        ignored = buildData.ignored,
+        hasBeenAnalyzed = {},
         files = {},
         packagesFiles = {},
         vendorFiles = {},
         fs = require('fs'),
-        path = require('path');
-    var Compiler = require("grunt-es6-module-transpiler/node_modules/es6-module-transpiler/dist/es6-module-transpiler").Compiler,
-        getDeps = function (file) {
-            var compiler = new Compiler(grunt.file.read('app/root/' + file + '.js'), file, {
+        path = require('path'),
+        Compiler = require("grunt-es6-module-transpiler/node_modules/es6-module-transpiler/dist/es6-module-transpiler").Compiler,
+        getDeps = function (module) {
+            var compiler = new Compiler(grunt.file.read('app/root/' + module + '.js'), module, {
                     type: 'amd'
                 }),
                 compiled = compiler.toAMD.apply(compiler),
@@ -44,12 +45,22 @@ module.exports = function (grunt) {
         };
 
     groups.forEach(function (group) {
-        var deps = getDeps(group)
-            .map(function (file) {
-                return 'transpiled/' + file + '.js';
+        var analyze = function (module) {
+            var deps, trasnpiledDeps;
+            if (hasBeenAnalyzed[group][module]) {
+                return;
+            }
+            hasBeenAnalyzed[group][module] = true;
+            deps = getDeps(module);
+            deps.forEach(analyze);
+            trasnpiledDeps = deps.map(function (dep) {
+                return 'transpiled/' + dep + '.js';
             });
-        deps.push('transpiled/' + group + '.js');
-        packagesFiles['dist/' + group + '.js'] = deps;
+            packagesFiles['dist/' + group + '.js'] = trasnpiledDeps;
+        };
+        hasBeenAnalyzed[group] = {};
+        analyze(group);
+        packagesFiles['dist/' + group + '.js'].push('transpiled/' + group + '.js');
     });
 
 
@@ -59,10 +70,9 @@ module.exports = function (grunt) {
     allFiles.forEach(function (file) {
         files['dist/' + file + '.js'] = ['transpiled/' + file + '.js'];
     });
-    vendors.forEach(function (vendor) {
-        var src = [];
-        vendorFiles['dist/vendor/' + vendor.name + '.js'] = ['dist/vendor/' + vendor.name + '.js'];
-    });
+    for (var vendor in vendors){
+        vendorFiles['dist/vendor/' + vendor + '.js'] = ['dist/vendor/' + vendor + '.js'];
+    }
     return {
         prod: {
             options: {
