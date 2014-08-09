@@ -6,20 +6,21 @@
 		<title></title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width">
-		
-	</head>
-	<body>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.14/require.js"></script>
 		<script src="/app/loader/loader.js"></script>
 		<script src="/dist/vendor/vendor-a.js"></script>
-		<script src="/dist/package-a.js"></script>
+		<script src="/dist/root/animals.js"></script>
 		<script>
 			require.config({
-				baseUrl: "/dist"
+				baseUrl: "/dist/root"
 			});
-			require('package-a', function(package){
+			require('animals', function(package){
 				package['default'].init();	
 			})
 		</script>
+		
+	</head>
+	<body>
+		<button>start</button>
 	</body>
 </html>

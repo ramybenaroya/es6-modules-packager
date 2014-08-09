@@ -9,24 +9,29 @@ module.exports = function (grunt) {
 		modulesDistDir = buildData.modulesDistDir,
 		vendorDistDir = buildData.vendorDistDir,
 		vendorFiles = {},
-		processVendors = function(){
+		processVendors = function () {
 			var vendor, src;
-			for (vendor in vendors){
+			for (vendor in vendors) {
+				eachVendor(vendor);
+			}
+
+			function eachVendor(vendor) {
 				src = [];
-				analyze(vendor);
+				analyze(vendor, src);
 				vendorFiles[vendorDistDir + '/' + vendor + '.js'] = src;
 			}
-			function analyze(ven){
-				if (vendors[ven]){
+
+			function analyze(ven, array) {
+				if (vendors[ven]) {
 					vendors[ven].forEach(function (sub) {
-						if (vendors[sub]){
-							analyze(sub);
+						if (vendors[sub]) {
+							analyze(sub, array);
 						} else {
-							src.push(vendorDistDir + '/' + sub + '.js');
+							array.push(vendorSrcDir + '/' + sub + '.js');
 						}
 					});
 				}
-			}	
+			}
 		};
 	processVendors();
 

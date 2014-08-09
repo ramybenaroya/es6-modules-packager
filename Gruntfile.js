@@ -1,10 +1,9 @@
 module.exports = function (grunt) {
 	require('load-grunt-tasks')(grunt);
 	var config = require('load-grunt-config')(grunt, {
-			configPath: 'tasks/options',
-			init: false,
-		});
-
+		configPath: 'tasks/options',
+		init: false,
+	});
 
 	grunt.loadTasks('tasks');
 
@@ -17,9 +16,9 @@ module.exports = function (grunt) {
 	]);
 
 	// Run a server. This is ideal for running the QUnit tests in the browser.
-	this.registerTask('server', ['build:dev', 'tests', 'connect', 'watch:server']);
-	this.registerTask('watcher', ['build:dev', 'tests', 'watch:server']);
-	this.registerTask('server:prod', ['build:prod', 'tests', 'connect', 'watch:server']);
+	this.registerTask('server', ['build:dev', 'tests', 'connect', 'watch:js']);
+	this.registerTask('watcher', ['build:dev', 'tests', 'concurrent:js']);
+	this.registerTask('server:prod', ['build:prod', 'tests', 'connect', 'watch:js']);
 
 	// Build test files
 	this.registerTask('tests', 'Builds the test package', ['transpile:testsAmd', 'buildTests:dist']);
@@ -56,7 +55,7 @@ module.exports = function (grunt) {
 
 	config.env = process.env;
 	config.pkg = grunt.file.readJSON('package.json');
-	config.build = grunt.file.readJSON('build.json'); 
+	config.build = grunt.file.readJSON('build.json');
 
 	// Load custom tasks from NPM
 	grunt.loadNpmTasks('grunt-mocha-test');

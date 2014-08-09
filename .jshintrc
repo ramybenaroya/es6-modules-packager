@@ -5,7 +5,8 @@
         "location": true,
         "setTimeout": true,
         "$": true,
-        "jQuery" : true
+        "jQuery" : true,
+        "require": true
     },
     "node": false,
     "browser": false,

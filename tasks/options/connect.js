@@ -5,10 +5,10 @@ module.exports = {
     hostname: '0.0.0.0',
     port: (process.env.PORT || 8000),
     base: '.',
-    middleware: function(connect, options) {
+    middleware: function (connect, options) {
       return [
         require('connect-redirection')(),
-        function(req, res, next) {
+        function (req, res, next) {
           if (req.url === '/') {
             res.redirect('/test');
           } else {

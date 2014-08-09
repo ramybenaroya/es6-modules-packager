@@ -1,8 +1,8 @@
 module.exports = function (grunt) {
-    return {
-        
-        options : {
-        	sourceMaps:true
-        }
-    };
+	return {
+
+		options: {
+			sourceMaps: true
+		}
+	};
 }

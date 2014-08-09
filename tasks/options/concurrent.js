@@ -1,6 +1,14 @@
 module.exports = {
-	scss: {
-
+	css: {
+		tasks: ['compass:dev', 'watch:css'],
+		options: {
+			logConcurrentOutput: true
+		}
 	},
-	js: ['watch:js']
+	js: {
+		tasks: ['watch:js'],
+		options: {
+			logConcurrentOutput: true
+		}
+	}
 };
