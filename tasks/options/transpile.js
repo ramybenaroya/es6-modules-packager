@@ -16,7 +16,7 @@ module.exports = {
 			expand: true,
 			cwd: '<%=pkg.root%>/',
 			src: ['**/*.js'],
-			dest: 'transpiled',
+			dest: '<%=build.transpiledDir%>',
 			ext: '.js'
 		}]
 	},
@@ -27,7 +27,7 @@ module.exports = {
 			expand: true,
 			cwd: '<%=pkg.root%>/',
 			src: ['**/*.js'],
-			dest: 'dist',
+			dest: '<%=build.modulesDistDir%>',
 			ext: '.js'
 		}]
 	},

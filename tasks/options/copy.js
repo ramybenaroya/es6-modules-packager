@@ -2,8 +2,8 @@ module.exports = {
 	main: {
 		files: [{
 			expand: true,
-			src: ['transpiled/**/.js'],
-			dest: 'dist/',
+			src: ['<%=build.transpiledDir%>/**/.js'],
+			dest: '<%=build.transpiledDistDir%>/',
 			filter: 'isFile',
 			flatten: true
 		}]

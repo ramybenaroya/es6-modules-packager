@@ -11,5 +11,7 @@
 	"rootSrcDir" : "app/root",
 	"vendorSrcDir" : "vendor",
 	"modulesDistDir" : "dist/root",
-	"vendorDistDir": "dist/vendor"
+	"vendorDistDir": "dist/vendor",
+	"transpiledDir": "transpiled",
+	"tempDir" : "tmp"
 }

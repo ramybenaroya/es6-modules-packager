@@ -129,7 +129,7 @@
 				},
 
 				promise: function (obj) {
-					if (obj === null) {
+					if (!obj) {
 						return promise;
 					} else {
 						for (var i in promise) {
@@ -342,7 +342,7 @@
 			$promise = $deferred.promise();
 			$promise.done(function (resolved) {
 				if (typeof onResolve === 'function') {
-					onResolve.call(resolved, [resolved]);
+					onResolve.call(resolved, resolved);
 				}
 			});
 			if (seen[name]) {
@@ -353,7 +353,7 @@
 				if (requirejsFallback) {
 					args = Array.prototype.slice.call(arguments, 0);
 					if (locks[name]) {
-						locks[name].promise().done(function(resolved) {
+						locks[name].promise().done(function (resolved) {
 							$deferred.resolve(resolved);
 						});
 					} else {
@@ -465,6 +465,7 @@
 	})();
 
 	globals.require = require;
+	globals.requireModule = require;
 	globals.requirejs = require;
 	globals.define = define;
 

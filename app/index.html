@@ -17,9 +17,8 @@
 			require.config({
 				baseUrl: "/dist"
 			});
-			require('package-a', function(){
-				debugger;
-				this['default'].init();	
+			require('package-a', function(package){
+				package['default'].init();	
 			})
 		</script>
 	</body>

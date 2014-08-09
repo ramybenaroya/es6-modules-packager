@@ -18,11 +18,11 @@
     "load-grunt-config": "~0.5.0",
     "load-grunt-tasks": "~0.2.0",
     "connect-redirection": "0.0.1",
-    "grunt-contrib-yuidoc": "~0.5.0",
+    "grunt-contrib-yuidoc": "^0.5.2",
     "grunt-traceur": "0.0.3",
     "grunt-contrib-concat": "^0.5.0",
     "grunt-groc": "^0.4.5",
-    "grunt-contrib-yuidoc": "^0.5.2"
+    "grunt-concurrent": "^0.5.0"
   },
   "root": "app/root",
   "vendor": "vendor",

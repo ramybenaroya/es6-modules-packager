@@ -22,7 +22,7 @@ module.exports = function (grunt) {
 						if (vendors[sub]){
 							analyze(sub);
 						} else {
-							src.push(vendorSrcDir + '/' + sub + '.js');
+							src.push(vendorDistDir + '/' + sub + '.js');
 						}
 					});
 				}

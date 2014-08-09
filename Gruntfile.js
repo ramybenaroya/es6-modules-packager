@@ -56,10 +56,13 @@ module.exports = function (grunt) {
 
 	config.env = process.env;
 	config.pkg = grunt.file.readJSON('package.json');
+	config.build = grunt.file.readJSON('build.json'); 
 
 	// Load custom tasks from NPM
 	grunt.loadNpmTasks('grunt-mocha-test');
 	grunt.loadNpmTasks('grunt-groc');
+	grunt.loadNpmTasks('grunt-concurrent');
+	grunt.loadNpmTasks('grunt-contrib-compass');
 
 
 	// Merge config into emberConfig, overwriting existing settings
