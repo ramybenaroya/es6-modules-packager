@@ -16,9 +16,9 @@ module.exports = function (grunt) {
 	]);
 
 	// Run a server. This is ideal for running the QUnit tests in the browser.
-	this.registerTask('server', ['build:dev', 'tests', 'connect', 'watch:js']);
-	this.registerTask('watcher', ['build:dev', 'tests', 'concurrent:js']);
-	this.registerTask('server:prod', ['build:prod', 'tests', 'connect', 'watch:js']);
+	this.registerTask('server', ['build:dev', 'tests', 'connect', 'watch:jsdev']);
+	this.registerTask('watcher', ['build:dev', 'tests', 'concurrent:jsdev']);
+	this.registerTask('server:prod', ['build:prod', 'tests', 'connect', 'watch:jsprod']);
 
 	// Build test files
 	this.registerTask('tests', 'Builds the test package', ['transpile:testsAmd', 'buildTests:dist']);
@@ -44,6 +44,13 @@ module.exports = function (grunt) {
 		'clean:slim',
 		'jshint',
 		'transpile:dev',
+	]);
+	this.registerTask('build:prod:slim', 'Builds a distributable version of <%= cfg.name %>', [
+		'clean:slim',
+		'jshint',
+		'transpile:prod',
+		'uglify:prod',
+		'uglify:packages'
 	]);
 
 	// Custom phantomjs test task

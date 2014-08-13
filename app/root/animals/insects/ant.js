@@ -1,3 +1,5 @@
+import {colorGenerator} from 'utils/util-bundle';
 export default function($container){
-	$container.append('<li>Ant</li>');
+	var $li = $('<li>Ant</li>').css('color', colorGenerator());
+	$container.append($li);
 }

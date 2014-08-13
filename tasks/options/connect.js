@@ -2,8 +2,8 @@ module.exports = {
   server: {},
 
   options: {
-    hostname: '0.0.0.0',
-    port: (process.env.PORT || 8000),
+    hostname: '127.0.0.1',
+    port: 9001,
     base: '.',
     middleware: function (connect, options) {
       return [

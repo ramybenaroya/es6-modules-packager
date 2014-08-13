@@ -5,8 +5,14 @@ module.exports = {
 			logConcurrentOutput: true
 		}
 	},
-	js: {
-		tasks: ['watch:js'],
+	jsdev: {
+		tasks: ['watch:jsdev'],
+		options: {
+			logConcurrentOutput: true
+		}
+	},
+	jsprod: {
+		tasks: ['watch:jsprod'],
 		options: {
 			logConcurrentOutput: true
 		}

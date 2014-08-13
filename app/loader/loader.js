@@ -1,4 +1,5 @@
 (function (globals) {
+	"use strict";
 
 	function isArray(arr) {
 		return Object.prototype.toString.call(arr) === '[object Array]';
@@ -304,7 +305,7 @@
 			})(arguments);
 		}
 	};
-
+	globals.isArray = isArray;
 	globals.Deferred = D;
 })(window);
 
@@ -312,7 +313,7 @@
 
 (function (globals) {
 
-	var define, require, requirejs, definejs,
+	var define, require, requirejs, definejs, resolveChild, requireSync, requireSingle,
 		requirejsFallback = false;
 	if (globals.require && globals.define && globals.define.amd) {
 		requirejs = globals.require;
@@ -332,49 +333,130 @@
 			};
 		};
 
-		require = function (name, onResolve) {
-			var args, $deferred, $promise;
+		resolveChild = function (child, parent) {
+			if (child.charAt(0) !== '.') {
+				return child;
+			}
+			var parts = child.split('/');
+			var parentBase = parent.split('/').slice(0, -1);
+
+			for (var i = 0, l = parts.length; i < l; i++) {
+				var part = parts[i];
+
+				if (part === '..') {
+					parentBase.pop();
+				} else if (part === '.') {
+					continue;
+				} else {
+					parentBase.push(part);
+				}
+			}
+
+			return parentBase.join('/');
+		};
+
+		require = function (names, onResolve) {
+			var deferred = new globals.Deferred(),
+				length,
+				resolvedArray = [],
+				counter = 0;
+			names = typeof names === 'string' ? [names] : names;
+			if (globals.isArray(names)) {
+				length = names.length;
+				deferred.progress(function (resolved, i) {
+					resolvedArray[i] = resolved;
+					counter++;
+					if (counter === length) {
+						deferred.resolve.apply(deferred, resolvedArray);
+						if (typeof onResolve === 'function') {
+							onResolve.apply(globals, resolvedArray);
+						}
+					}
+				});
+				names.forEach(function (name, i) {
+					requireSingle(name)
+						.then(function (resolved) {
+							deferred.notify(resolved, i);
+						});
+				});
+			} else {
+				deferred.reject();
+				throw 'require first argument must be an array or string';
+			}
+		};
+
+		requireSync = function (name) {
+
+			if (seen[name]) {
+				return seen[name];
+			}
+			seen[name] = {};
+
+			if (!registry[name]) {
+				throw new Error("Could not find module " + name);
+			}
+
+			var mod = registry[name],
+				deps = mod.deps,
+				callback = mod.callback,
+				reified = [],
+				exports;
+
+			for (var i = 0, l = deps.length; i < l; i++) {
+				if (deps[i] === 'exports') {
+					reified.push(exports = {});
+				} else {
+					reified.push(require(resolveChild(deps[i], name)));
+				}
+			}
+
+			var value = callback.apply(this, reified);
+			return seen[name] = exports || value;
+		};
+
+		requireSingle = function (name, onResolve) {
+			var args, deferred, promise;
 			if (requirejsFallback && typeof name !== 'string') {
 				args = Array.prototype.slice.call(arguments, 0);
 				return requirejs.apply(this, args);
 			}
-			$deferred = new globals.Deferred();
-			$promise = $deferred.promise();
-			$promise.done(function (resolved) {
+			deferred = new globals.Deferred();
+			promise = deferred.promise();
+			promise.done(function (resolved) {
 				if (typeof onResolve === 'function') {
 					onResolve.call(resolved, resolved);
 				}
 			});
 			if (seen[name]) {
-				$deferred.resolve(seen[name]);
-				return $promise;
+				deferred.resolve(seen[name]);
+				return promise;
 			}
 			if (!registry[name]) {
 				if (requirejsFallback) {
 					args = Array.prototype.slice.call(arguments, 0);
 					if (locks[name]) {
 						locks[name].promise().done(function (resolved) {
-							$deferred.resolve(resolved);
+							deferred.resolve(resolved);
 						});
 					} else {
 						requireForReal();
 					}
-					return $promise;
+					return promise;
 				} else {
-					$deferred.reject();
+					deferred.reject();
 					throw new Error('Could not find module ' + name);
 				}
 			}
 			seen[name] = {};
 			resolveDeps();
-			return $promise;
+			return promise;
 
 			function requireForReal() {
 				locks[name] = new globals.Deferred();
 				requirejs.call(this, [name], function () {
 					if (registry[name]) {
-						require(name).done(function (resolved) {
-							$deferred.resolve(resolved);
+						requireSingle(name).done(function (resolved) {
+							deferred.resolve(resolved);
 						});
 					}
 				});
@@ -390,7 +472,7 @@
 					count = 0,
 					self = this,
 					eachDep = function (i) {
-						require(resolve(deps[i])).done(function (toPush) {
+						requireSingle(resolveChild(deps[i]), name).done(function (toPush) {
 							reified[i] = toPush;
 							count++;
 							if (count === l) {
@@ -424,37 +506,15 @@
 					if (registry[name].deps[registry[name].deps.length - 1] !== 'exports') {
 						seen[name]['default'] = seen[name];
 					}
-					$deferred.resolve(seen[name]);
+					deferred.resolve(seen[name]);
 					if (locks[name]) {
 						nameLock = locks[name];
 						delete locks[name];
 						nameLock.resolve(seen[name]);
 					}
 				}).fail(function () {
-					$deferred.reject();
+					deferred.reject();
 				});
-			}
-
-			function resolve(child) {
-				if (child.charAt(0) !== '.') {
-					return child;
-				}
-				var parts = child.split('/');
-				var parentBase = name.split('/').slice(0, -1);
-
-				for (var i = 0, l = parts.length; i < l; i++) {
-					var part = parts[i];
-
-					if (part === '..') {
-						parentBase.pop();
-					} else if (part === '.') {
-						continue;
-					} else {
-						parentBase.push(part);
-					}
-				}
-
-				return parentBase.join('/');
 			}
 		};
 		require.entries = require._eak_seen = registry;
@@ -465,9 +525,10 @@
 	})();
 
 	globals.require = require;
-	globals.requireModule = require;
+	globals.requireModule = requireSingle;
 	globals.requirejs = require;
 	globals.define = define;
+	globals.requireSync = requireSync;
 
 	if (requirejsFallback) {
 		extend(require, requirejs);

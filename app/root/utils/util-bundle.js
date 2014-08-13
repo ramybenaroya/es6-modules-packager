@@ -1,6 +1,4 @@
-import $ from 'jquery';
-
-export default function (name) {
+var containerCreator = function (name) {
 	var $wrapper = $('<div class="continer"></div>'),
 		$title = $('<h1></h1>'),
 		$ul = $('<ul></ul>');
@@ -12,4 +10,9 @@ export default function (name) {
 		container: $ul,
 		wrapper: $wrapper
 	};
-}
+};
+
+var colorGenerator = function(){
+	return "#"+((1<<24)*Math.random()|0).toString(16);
+};
+export { containerCreator, colorGenerator };

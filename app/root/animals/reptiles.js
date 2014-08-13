@@ -1,4 +1,4 @@
-import containerCreator from 'utils/container-creator';
+import {containerCreator} from 'utils/util-bundle';
 import lizard from 'animals/reptiles/lizard';
 import crocodile from 'animals/reptiles/crocodile';
 import camelion from 'animals/reptiles/camelion';

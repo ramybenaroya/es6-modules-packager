@@ -14,9 +14,9 @@
 			require.config({
 				baseUrl: "/dist/root"
 			});
-			require('animals', function(package){
+			require(['animals', 'animals/insects/ant'], function(package, ant){
 				package['default'].init();	
-			})
+			});
 		</script>
 		
 	</head>

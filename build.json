@@ -1,7 +1,7 @@
 {
-	"groups": ["animals", "animals/insects"],
+	"groups": ["animals"],
 	"vendors": {
-		"vendor-a": ["jquery"]
+		"vendor-a": ["jquery", "vendor1", "vendor2"]
 	},
 	"css" : [],
 

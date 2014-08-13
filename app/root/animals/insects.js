@@ -1,4 +1,4 @@
-import containerCreator from 'utils/container-creator';
+import {containerCreator} from 'utils/util-bundle';
 import beetle from 'animals/insects/beetle';
 import mantis from 'animals/insects/mantis';
 import ant from 'animals/insects/ant';
