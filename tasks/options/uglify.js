@@ -17,7 +17,9 @@ module.exports = function (grunt) {
         path = require('path'),
         Compiler = require("grunt-es6-module-transpiler/node_modules/es6-module-transpiler/dist/es6-module-transpiler").Compiler,
         getDeps = function (module) {
-            var compiler, deps,compiled;
+            var compiler, deps,compiled,matchesArray, index,
+                reg = /\/\*no-package\*\/.*?__dependency(\d+?)__\[/g,
+                ignoredByComment = {};
             try {
                 compiler = new Compiler(grunt.file.read(rootDir + '/' + module + '.js'), module, {
                     type: 'amd'
@@ -25,12 +27,18 @@ module.exports = function (grunt) {
             } catch (e) {
                 throw "cannot compile module " + module + '.\n' + e;
             }
+            compiled = compiler.toAMD.apply(compiler).replace(/(\r\n|\n|\r)/gm,"").replace(/\s+/g," ");
+            deps = JSON.parse(compiled.substring(compiled.indexOf('['), compiled.indexOf(']') + 1));
+            while ((matchesArray = reg.exec(compiled)) !== null){
+                if (matchesArray.length === 2){
+                    index = parseInt(matchesArray[1]) - 1;
+                    ignoredByComment[deps[index]] = true;
+                }
+            }
 
-            compiled = compiler.toAMD.apply(compiler),
-            deps = JSON.parse(compiled.substring(compiled.indexOf('['), compiled.indexOf(']') + 1)).filter(function (dep) {
-                return !ignored[dep];
+            return deps.filter(function (dep) {
+                return !ignored[dep] && !ignoredByComment[dep];
             });
-            return deps;
         },
         getFiles = function (dir, files_) {
             files_ = files_ || [];

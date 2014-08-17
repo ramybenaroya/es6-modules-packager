@@ -1,5 +1,8 @@
+/*no-package*/
 import mammals from 'animals/mammals';
+/*no-package*/
 import reptiles from 'animals/reptiles';
+
 
 export default  {
 	init: function(){
