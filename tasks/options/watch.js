@@ -1,14 +1,26 @@
 module.exports = {
-	jsdev: {
-		files: ['<%=pkg.root%>/**/*.js'],
-		tasks: ['build:dev:slim', 'tests']
+	specdev: {
+		files: ['build.json'],
+		tasks: ['build:dev:spec']
 	},
-	jsprod: {
-		files: ['<%=pkg.root%>/**/*.js'],
-		tasks: ['build:prod:slim', 'tests']
+	modulesdev: {
+		files: ['<%=build.modulesSrcDir%>/**/*.js'],
+		tasks: ['build:dev:modules']
 	},
-	css: {
+	specprod: {
+		files: ['build.json'],
+		tasks: ['build:prod:spec']
+	},
+	modulesprod: {
+		files: ['<%=build.modulesSrcDir%>/**/*.js'],
+		tasks: ['build:prod:modules']
+	},
+	vendorprod: {
+		files: ['<%=build.vendorSrcDir%>/**/*.js'],
+		tasks: ['build:prod:vendor']
+	},
+	cssprod: {
 		files: ['<%=build.cssSrcDir%>/**/*.css'],
-		tasks: ['build:css:slim']
+		tasks: ['build:prod:css']
 	}
 };

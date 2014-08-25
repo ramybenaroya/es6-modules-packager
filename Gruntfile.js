@@ -16,9 +16,10 @@ module.exports = function (grunt) {
 	]);
 
 	// Run a server. This is ideal for running the QUnit tests in the browser.
-	this.registerTask('server', ['build:dev', 'tests', 'connect', 'watch:jsdev']);
-	this.registerTask('watcher', ['build:dev', 'tests', 'concurrent:jsdev']);
-	this.registerTask('server:prod', ['build:prod', 'tests', 'connect', 'watch:jsprod']);
+	this.registerTask('server', ['build:dev', 'connect', 'concurrent:dev']);
+	this.registerTask('watcher', ['build:dev', 'concurrent:dev']);
+	this.registerTask('server:prod', ['build:prod', 'connect', 'concurrent:prod']);
+	this.registerTask('watcher:prod',  ['build:prod', 'concurrent:prod']);
 
 	// Build test files
 	this.registerTask('tests', 'Builds the test package', ['transpile:testsAmd', 'buildTests:dist']);
@@ -28,65 +29,65 @@ module.exports = function (grunt) {
 		'clean',
 		'jshint',
 		'transpile:prod',
-		'uglify:prod',
-		'concat:vendor',
-		'uglify:packages',
-		'uglify:vendor'
+		'uglifyModules',
+		'uglifyPackages',
+		'uglifyVendors',
+		'jspify:vendor:prod',
+		'compass:compile',
+		'cssminPackages',
+		'jspify:css:prod',
+		'jspify:html'
+	]);
+	this.registerTask('build:prod:spec', 'Builds a distributable version of <%= cfg.name %>', [
+		'clean',
+		'build:prod:modules',
+		'uglifyVendors',
+		'jspify:vendor:prod',
+		'cssminPackages',
+		'jspify:css:prod',
+		'jspify:html'
 	]);
 
 	this.registerTask('build:dev', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean',
 		'jshint',
 		'transpile:dev',
-		'vendors:dev'
+		'jspify:vendor:dev',
+		'compass:compile',
+		'jspify:css:dev',
+		'jspify:html'
 	]);
-	this.registerTask('build:dev:slim', 'Builds a distributable version of <%= cfg.name %>', [
-		'clean:slim',
+	this.registerTask('build:dev:spec', 'Builds a distributable version of <%= cfg.name %>', [
+		'clean',
+		'build:dev:modules',
+		'jspify:vendor:dev',
+		'jspify:css:dev',
+		'jspify:html'
+	]);
+	this.registerTask('build:dev:modules', 'Builds a distributable version of <%= cfg.name %>', [
+		'clean:modules',
 		'jshint',
 		'transpile:dev',
 	]);
-	this.registerTask('build:prod:slim', 'Builds a distributable version of <%= cfg.name %>', [
-		'clean:slim',
+	this.registerTask('build:prod:modules', 'Builds a distributable version of <%= cfg.name %>', [
+		'clean:modules',
 		'jshint',
 		'transpile:prod',
-		'uglify:prod',
-		'uglify:packages'
+		'uglifyModules',
+		'uglifyPackages'
 	]);
 
-	grunt.registerTask('vendors:dev', 'create a script for loading all vendor scripts synchrounsly', function () {
-		var buildData = grunt.file.readJSON('build.json'),
-			distPrefix = buildData.vendorDistDir,
-			srcPrefix = buildData.vendorSrcDir,
-			vendor,
-			output, length, i;
-		for (vendor in buildData.vendors) {
-			output = [];
-			appendScriptPrefix(output);
-			length = buildData.vendors[vendor].length;
-			for (i = 0; i < length - 1; i++) {
-				output.push('\t\t\t"' + srcPrefix + '/' + buildData.vendors[vendor][i] + '.js",');
-			}
-			output.push('\t\t\t"' + srcPrefix + '/' + buildData.vendors[vendor][i] + '.js"');
-			appendScriptSuffix(output);
-			grunt.file.write(distPrefix + '/' + vendor + '.js', grunt.template.process(output.join('\n')));
-		}
+	this.registerTask('build:prod:vendor', 'Builds a distributable version of <%= cfg.name %>', [
+		'clean:vendor',
+		'uglifyVendors'
+	]);
 
-		function appendScriptPrefix(output){
-			output.push('(function(globals) {');
-			output.push('\tvar i, length,');
-			output.push('\t\tsrcs = [');
-		}
+	this.registerTask('build:prod:css', 'Builds a distributable version of <%= cfg.name %>', [
+		'clean:css',
+		'cssminPackages'
+	]);
 
-		function appendScriptSuffix(output){
-			output.push('\t\t];');
-			output.push('\tlength = srcs.length;');
-			output.push('\tfor(i = 0; i < length; i++){');
-			output.push('\t\tdocument.write(\'<script type="text/javascript" src="\' + srcs[i] + \'"><\/script>\');');
-			output.push('\t}');
-			output.push('})(window);');
-		}
 
-	});
 
 	// Custom phantomjs test task
 
@@ -104,6 +105,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-groc');
 	grunt.loadNpmTasks('grunt-concurrent');
 	grunt.loadNpmTasks('grunt-contrib-compass');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 
 
 	// Merge config into emberConfig, overwriting existing settings

@@ -1,20 +1,15 @@
 module.exports = {
-	css: {
-		tasks: ['compass:dev', 'watch:css'],
+	dev: {
+		tasks: ['watch:modulesdev', 'watch:specdev', 'compass:watch'],
 		options: {
 			logConcurrentOutput: true
 		}
 	},
-	jsdev: {
-		tasks: ['watch:jsdev'],
+	prod: {
+		tasks: ['watch:modulesprod', 'watch:vendorprod', 'watch:cssprod', 'watch:specprod', 'compass:watch'],
 		options: {
-			logConcurrentOutput: true
-		}
-	},
-	jsprod: {
-		tasks: ['watch:jsprod'],
-		options: {
-			logConcurrentOutput: true
+			logConcurrentOutput: true,
+			limit: 5
 		}
 	}
 };

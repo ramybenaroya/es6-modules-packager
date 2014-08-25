@@ -3,7 +3,9 @@
 	"vendors": {
 		"vendor-a": ["jquery", "vendor-1", "vendor-2"]
 	},
-	"css" : [],
+	"stylesheets" : {
+		"css-package-1": ["folder-a/style-1", "folder-b/style-2"]
+	},
 
 	"ignored": {
 		"jquery": true,
@@ -12,6 +14,7 @@
 	
 	"rootSrcDir" : "app/root",
 	"vendorSrcDir" : "vendor",
+	"modulesSrcDir": "app/root",
 	"modulesDistDir" : "dist/root",
 	"vendorDistDir": "dist/vendor",
 	"transpiledDir": "transpiled",

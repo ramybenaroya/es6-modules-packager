@@ -1,8 +1,20 @@
 module.exports = {
-	dev: {
-		cssDir: "app/stylesheets/",
-		sassDir: "app/stylesheets/",
-		cacheDir: "./.sass-cache",
-		watch: true
+	compile: {
+		options: {
+			// cssDir: "app/stylesheets/",
+			// sassDir: "app/stylesheets/",
+			// cacheDir: "./.sass-cache",
+			config: 'config.rb'
+		}
+		
+	},
+	watch: {
+		options: {
+			// cssDir: "app/stylesheets/",
+			// sassDir: "app/stylesheets/",
+			// cacheDir: "./.sass-cache",
+			watch: true,
+			config: 'config.rb'
+		}
 	}
 };
