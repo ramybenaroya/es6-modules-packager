@@ -1,9 +1,9 @@
 module.exports = function (grunt) {
 	grunt.registerTask('uglifyModules', 'create a script for loading all vendor scripts synchrounsly', function () {
-		var buildData = grunt.file.readJSON('build.json'),
-			rootDir = buildData.rootSrcDir,
-			transpiledDir = buildData.transpiledDir,
+		var buildData = grunt.file.readJSON('config/build.json'),
+			modulesSrcDir = buildData.modulesSrcDir,
 			modulesDistDir = buildData.modulesDistDir,
+			transpiledDir = buildData.transpiledDir,
 			files = {},
 			fs = require('fs'),
 			path = require('path'),
@@ -23,14 +23,14 @@ module.exports = function (grunt) {
 				return files_;
 			};
 
-		var allFiles = getFiles(rootDir).map(function (file) {
-			return file.replace(rootDir + '/', '').replace('.js', '');
+		var allFiles = getFiles(modulesSrcDir).map(function (file) {
+			return file.replace(modulesSrcDir + '/', '').replace('.js', '');
 		});
 		allFiles.forEach(function (file) {
 			files[modulesDistDir + '/' + file + '.js'] = [transpiledDir + '/' + file + '.js'];
 		});
-		grunt.config('uglify.modules.files', files);
-		grunt.task.run(['uglify:modules']);
+		grunt.config('uglify.single_modules.files', files);
+		grunt.task.run(['uglify:single_modules']);
 
 	});
 };

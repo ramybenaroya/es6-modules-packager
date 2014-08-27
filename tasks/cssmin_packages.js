@@ -1,26 +1,26 @@
 module.exports = function (grunt) {
-	grunt.registerTask('cssminPackages', 'Create a single css file for each package using @import', function () {
-		var buildData = grunt.file.readJSON('build.json'),
-			stylesheets = buildData.stylesheets,
+	grunt.registerTask('minifyCssPackages', 'Minify CSS packages', function () {
+		var buildData = grunt.file.readJSON('config/build.json'),
+			cssPackages = grunt.file.readJSON('config/css.packages.json'),
 			cssDistDir = buildData.cssDistDir,
 			cssSrcDir = buildData.cssSrcDir,
-			packageFiles = {},
-			processPackages = function () {
-				var package, src;
-				for (package in stylesheets) {
-					eachPackage(package);
+			files = {},
+			processCssPackages = function () {
+				var cssPackage, src;
+				for (cssPackage in cssPackages) {
+					eachPackage(cssPackage);
 				}
 
-				function eachPackage(package) {
+				function eachPackage(cssPackage) {
 					src = [];
-					analyze(package, src);
-					packageFiles[cssDistDir + '/' + package + '.css'] = src;
+					analyze(cssPackage, src);
+					files[cssDistDir + '/' + cssPackage + '.css'] = src;
 				}
 
 				function analyze(css, array) {
-					if (stylesheets[css]) {
-						stylesheets[css].forEach(function (sub) {
-							if (stylesheets[sub]) {
+					if (cssPackages[css]) {
+						cssPackages[css].forEach(function (sub) {
+							if (cssPackages[sub]) {
 								analyze(sub, array);
 							} else {
 								array.push(cssSrcDir + '/' + sub + '.css');
@@ -30,8 +30,8 @@ module.exports = function (grunt) {
 				}
 			};
 
-		processPackages();
-		grunt.config('cssmin.packages.files', packageFiles);
+		processCssPackages();
+		grunt.config('cssmin.packages.files', files);
 		grunt.task.run(['cssmin:packages']);
 	});
 };

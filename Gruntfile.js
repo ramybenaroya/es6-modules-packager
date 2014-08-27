@@ -30,39 +30,43 @@ module.exports = function (grunt) {
 		'jshint',
 		'transpile:prod',
 		'uglifyModules',
-		'uglifyPackages',
-		'uglifyVendors',
-		'jspify:vendor:prod',
+		'uglifyPackagedModules',
+		'uglifyJsPackages',
+		'generate_includers:js:prod',
 		'compass:compile',
-		'cssminPackages',
-		'jspify:css:prod',
-		'jspify:html'
+		'minifyCssPackages',
+		'generate_includers:css:prod',
+		'generateRequireConfig:prod',
+		'generate_includers:html'
 	]);
 	this.registerTask('build:prod:spec', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean',
 		'build:prod:modules',
-		'uglifyVendors',
-		'jspify:vendor:prod',
-		'cssminPackages',
-		'jspify:css:prod',
-		'jspify:html'
+		'uglifyJsPackages',
+		'generate_includers:js:prod',
+		'minifyCssPackages',
+		'generate_includers:css:prod',
+		'generateRequireConfig:prod',
+		'generate_includers:html'
 	]);
 
 	this.registerTask('build:dev', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean',
 		'jshint',
 		'transpile:dev',
-		'jspify:vendor:dev',
+		'generate_includers:js:dev',
 		'compass:compile',
-		'jspify:css:dev',
-		'jspify:html'
+		'generate_includers:css:dev',
+		'generateRequireConfig:dev',
+		'generate_includers:html'
 	]);
 	this.registerTask('build:dev:spec', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean',
 		'build:dev:modules',
-		'jspify:vendor:dev',
-		'jspify:css:dev',
-		'jspify:html'
+		'generate_includers:js:dev',
+		'generate_includers:css:dev',
+		'generateRequireConfig:dev',
+		'generate_includers:html'
 	]);
 	this.registerTask('build:dev:modules', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean:modules',
@@ -74,17 +78,17 @@ module.exports = function (grunt) {
 		'jshint',
 		'transpile:prod',
 		'uglifyModules',
-		'uglifyPackages'
+		'uglifyPackagedModules'
 	]);
 
-	this.registerTask('build:prod:vendor', 'Builds a distributable version of <%= cfg.name %>', [
-		'clean:vendor',
-		'uglifyVendors'
+	this.registerTask('build:prod:js_packages', 'Builds a distributable version of <%= cfg.name %>', [
+		'clean:js',
+		'uglifyJsPackages'
 	]);
 
 	this.registerTask('build:prod:css', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean:css',
-		'cssminPackages'
+		'minifyCssPackages'
 	]);
 
 
@@ -98,7 +102,7 @@ module.exports = function (grunt) {
 
 	config.env = process.env;
 	config.pkg = grunt.file.readJSON('package.json');
-	config.build = grunt.file.readJSON('build.json');
+	config.build = grunt.file.readJSON('config/build.json');
 
 	// Load custom tasks from NPM
 	grunt.loadNpmTasks('grunt-mocha-test');

@@ -1,6 +1,6 @@
 function nameFor(path) {
 	var result, match;
-	if (match = path.match(/^(?:root|test|test\/tests)\/(.*?)(?:\.js)?$/)) {
+	if (match = path.match(/^(?:modules|test|test\/tests)\/(.*?)(?:\.js)?$/)) {
 		result = match[1];
 	} else {
 		result = path;
@@ -14,7 +14,7 @@ module.exports = {
 		type: 'amd',
 		files: [{
 			expand: true,
-			cwd: '<%=pkg.root%>/',
+			cwd: '<%=build.modulesSrcDir%>/',
 			src: ['**/*.js'],
 			dest: '<%=build.transpiledDir%>',
 			ext: '.js'
@@ -25,7 +25,7 @@ module.exports = {
 		type: 'amd',
 		files: [{
 			expand: true,
-			cwd: '<%=pkg.root%>/',
+			cwd: '<%=build.modulesSrcDir%>/',
 			src: ['**/*.js'],
 			dest: '<%=build.modulesDistDir%>',
 			ext: '.js'

@@ -3,6 +3,6 @@ module.exports = {
 		'jshintrc': '.jshintrc'
 	},
 	output: {
-		src: ['<%=pkg.root%>/**/*.js']
+		src: ['<%=build.modulesSrcDir%>/**/*.js']
 	}
 };

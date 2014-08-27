@@ -1,6 +1,6 @@
 module.exports = {
 	specdev: {
-		files: ['build.json'],
+		files: ['config/**/*.json'],
 		tasks: ['build:dev:spec']
 	},
 	modulesdev: {
@@ -8,16 +8,16 @@ module.exports = {
 		tasks: ['build:dev:modules']
 	},
 	specprod: {
-		files: ['build.json'],
+		files: ['config/**/*.json'],
 		tasks: ['build:prod:spec']
 	},
 	modulesprod: {
 		files: ['<%=build.modulesSrcDir%>/**/*.js'],
 		tasks: ['build:prod:modules']
 	},
-	vendorprod: {
-		files: ['<%=build.vendorSrcDir%>/**/*.js'],
-		tasks: ['build:prod:vendor']
+	jsprod: {
+		files: ['<%=build.jsSrcDir%>/**/*.js'],
+		tasks: ['build:prod:js_packages']
 	},
 	cssprod: {
 		files: ['<%=build.cssSrcDir%>/**/*.css'],

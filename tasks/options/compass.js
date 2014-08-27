@@ -1,20 +1,14 @@
 module.exports = {
 	compile: {
 		options: {
-			// cssDir: "app/stylesheets/",
-			// sassDir: "app/stylesheets/",
-			// cacheDir: "./.sass-cache",
-			config: 'config.rb'
+			config: 'config/compass.config.rb'
 		}
 		
 	},
 	watch: {
 		options: {
-			// cssDir: "app/stylesheets/",
-			// sassDir: "app/stylesheets/",
-			// cacheDir: "./.sass-cache",
 			watch: true,
-			config: 'config.rb'
+			config: 'config/compass.config.rb'
 		}
 	}
 };

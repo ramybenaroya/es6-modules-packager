@@ -9,22 +9,31 @@
     <meta name="viewport" content="width=device-width">
     <script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.14/require.js"></script>
     <script src="/app/loader/loader.js"></script>
-    <script src="/dist/root/animals.js"></script>
+    <script src="/dist/modules/animals.js"></script>
     <!-- Should be: 
-			<%@include file="/dist/vendor/vendor-a.js.jspf"%>
-			<%@include file="/dist/stylesheets/css-package-1.css.jspf" %>	
+		<%@include file="/dist/vendor/vendor-a.js.jspf"%>
+		<%@include file="/dist/stylesheets/css-package-1.css.jspf" %>	
 	But for now we will use: -->
-    <jspf tag="script" path="dist/vendor/vendor-a.js.jspf"></jspf>
+    <include tag="script" file="dist/js_includes/vendor-a.js.jspf"></include>
+    <script generated="" type="text/javascript" src="/app/js/vendor/jquery.js"></script>
+    <script generated="" type="text/javascript" src="/app/js/vendor/vendor-1.js"></script>
+    <script generated="" type="text/javascript" src="/app/js/vendor/vendor-2.js"></script>
     <!---->
-    <jspf tag="link" path="dist/stylesheets/css-package-1.css.jspf"></jspf>
+    <include tag="link" file="dist/css_includes/css-package-1.css.jspf"></include>
+    <link generated="" type="text/css" rel="stylesheet" href="/app/stylesheets/folder-a/style-1.css">
+    <link generated="" type="text/css" rel="stylesheet" href="/app/stylesheets/folder-b/style-2.css">
     <!-- -->
+    <script src="/dist/require.config.js"></script>
     <script>
-        require.config({
-            baseUrl: "/dist/root"
-        });
         require(['animals'], function(package, ant) {
             package['default'].init();
         });
+        require(['vendor-b'], function() {
+            require(['vendor-b'], function() {
+            debugger;
+        });
+        });
+        
     </script>
 </head>
 

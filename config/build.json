@@ -1,0 +1,14 @@
+{
+	"modulesSrcDir": "app/modules",
+	"modulesDistDir" : "dist/modules",
+	"transpiledDir": "transpiled",
+	"jsSrcDir" : "app/js",
+	"jsDistDir": "dist/js",
+	"cssSrcDir": "app/stylesheets",
+	"cssDistDir": "dist/stylesheets",
+	"jsIncludersDistDir": "dist/js_includes",
+	"cssIncludersDistDir": "dist/css_includes",
+	"includerExtension" : "jspf",
+	"requireConfigDistDir" : "dist",
+	"tempDir" : "tmp"
+}

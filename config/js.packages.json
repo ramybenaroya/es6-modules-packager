@@ -1,0 +1,4 @@
+{
+	"vendor-a": ["vendor/jquery", "vendor/vendor-1", "vendor/vendor-2"],
+	"vendor-b": ["vendor/vendor-1"]
+}

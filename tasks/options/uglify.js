@@ -1,24 +1,20 @@
 module.exports = {
-    modules: {
+    single_modules: {
         options: {
             mangle: true,
             sourceMap: true
-
-        },
-        //files: files
+        }
     },
-    packages: {
+    packaged_modules: {
         options: {
             mangle: true,
             sourceMap: true
-        },
-        //files: packagesFiles
+        }
     },
-    vendor: {
+    js_packages: {
         options: {
             mangle: true,
             sourceMap: true
-        },
-        //files: vendorFiles
+        }
     }
 };

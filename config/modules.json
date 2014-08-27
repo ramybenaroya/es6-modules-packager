@@ -1,0 +1,7 @@
+{
+	"modules" : ["animals", "animals/insects"],
+	"ignored": {
+		"jquery": true,
+		"exports": true
+	}
+}
