@@ -1,6 +1,11 @@
 {
 	"waitSeconds": 30,
-	"shim" : {
-		"aaa" : { "deps" : ["bbb"]}
+	"paths": {
+
+	},
+	"shim": {
+		"aaa": {
+			"deps": ["bbb"]
+		}
 	}
 }
