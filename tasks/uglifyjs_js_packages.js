@@ -1,5 +1,5 @@
 module.exports = function (grunt) {
-	grunt.registerTask('uglifyJsPackages', 'Minify JS Packages', function () {
+	grunt.registerTask('uglifyjs:js_packages', 'Minify JS Packages', function () {
 		var buildData = grunt.file.readJSON('config/build.json'),
 			jsPackages = grunt.file.readJSON('config/js.packages.json'),
 			jsDistDir = buildData.jsDistDir,

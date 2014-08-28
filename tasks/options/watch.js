@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 			},
 			jsdev: {
 				files: ['<%=build.jsSrcDir%>/**/*.js'],
-				tasks: []	
+				tasks: ['build:dev:js_packages']	
 			},
 			cssdev: {
 				files: ['<%=build.cssSrcDir%>/**/*.css'],

@@ -1,5 +1,5 @@
 module.exports = function (grunt) {
-	grunt.registerTask('uglifyPackagedModules', 'create a script for loading all vendor scripts synchrounsly', function () {
+	grunt.registerTask('uglifyjs:packaged_modules', 'create a script for loading all vendor scripts synchrounsly', function () {
 		var buildData = grunt.file.readJSON('config/build.json'),
 			modulesData = grunt.file.readJSON('config/modules.json'),
 			modules = modulesData.modules,

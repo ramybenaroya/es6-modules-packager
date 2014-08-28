@@ -8,6 +8,8 @@ module.exports = function (grunt) {
 	grunt.loadTasks('tasks');
 
 	this.registerTask('default', ['watcher']);
+	this.registerTask('watcher', ['watcher:dev']);
+	this.registerTask('server', ['server:dev']);
 	this.registerTask('build', ['build:prod']);
 
 	// Run client-side tests on the command line.
@@ -16,10 +18,10 @@ module.exports = function (grunt) {
 	]);
 
 	// Run a server. This is ideal for running the QUnit tests in the browser.
-	this.registerTask('server', ['build:dev', 'connect', 'concurrent:dev']);
-	this.registerTask('watcher', ['build:dev', 'concurrent:dev']);
-	this.registerTask('server:prod', ['build:prod', 'connect', 'concurrent:prod']);
-	this.registerTask('watcher:prod',  ['build:prod', 'concurrent:prod']);
+	this.registerTask('server:dev', ['enable_force','build:dev', 'connect', 'concurrent:dev']);
+	this.registerTask('watcher:dev', ['enable_force','build:dev', 'concurrent:dev']);
+	this.registerTask('server:prod', ['enable_force','build:prod', 'connect', 'concurrent:prod']);
+	this.registerTask('watcher:prod',  ['enable_force','build:prod', 'concurrent:prod']);
 
 	// Build test files
 	this.registerTask('tests', 'Builds the test package', ['transpile:testsAmd', 'buildTests:dist']);
@@ -28,14 +30,14 @@ module.exports = function (grunt) {
 	this.registerTask('build:prod', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean',
 		'generate_includers:livereload',
-		'jshint',
+		'hint',
 		'transpile:prod',
-		'uglifyModules',
-		'uglifyPackagedModules',
-		'uglifyJsPackages',
+		'uglifyjs:single_modules',
+		'uglifyjs:packaged_modules',
+		'uglifyjs:js_packages',
 		'generate_includers:js:prod',
 		'compass:compile',
-		'minifyCssPackages',
+		'cssmin:css_packages',
 		'generate_includers:css:prod',
 		'generateRequireConfig:prod',
 		'generate_includers:clean',
@@ -43,11 +45,13 @@ module.exports = function (grunt) {
 	]);
 	this.registerTask('build:prod:spec', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean',
+		'enable_force',
+		'hint',
 		'generate_includers:livereload',
 		'build:prod:modules',
-		'uglifyJsPackages',
+		'uglifyjs:js_packages',
 		'generate_includers:js:prod',
-		'minifyCssPackages',
+		'cssmin:css_packages',
 		'generate_includers:css:prod',
 		'generateRequireConfig:prod',
 		'generate_includers:clean',
@@ -57,7 +61,7 @@ module.exports = function (grunt) {
 	this.registerTask('build:dev', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean',
 		'generate_includers:livereload',
-		'jshint',
+		'hint',
 		'transpile:dev',
 		'generate_includers:js:dev',
 		'compass:compile',
@@ -68,6 +72,8 @@ module.exports = function (grunt) {
 	]);
 	this.registerTask('build:dev:spec', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean',
+		'enable_force',
+		'hint',
 		'generate_includers:livereload',
 		'build:dev:modules',
 		'generate_includers:js:dev',
@@ -78,26 +84,44 @@ module.exports = function (grunt) {
 	]);
 	this.registerTask('build:dev:modules', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean:modules',
-		'jshint',
+		'enable_force',
+		'hint',
 		'transpile:dev',
 	]);
+
+	this.registerTask('build:dev:js_packages', 'Builds a distributable version of <%= cfg.name %>', [
+		'hint'
+	]);
+
 	this.registerTask('build:prod:modules', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean:modules',
-		'jshint',
+		'enable_force',
+		'hint',
 		'transpile:prod',
-		'uglifyModules',
-		'uglifyPackagedModules'
+		'uglifyjs:single_modules',
+		'uglifyjs:packaged_modules'
 	]);
 
 	this.registerTask('build:prod:js_packages', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean:js',
-		'uglifyJsPackages'
+		'enable_force',
+		'hint',
+		'uglifyjs:js_packages'
 	]);
 
 	this.registerTask('build:prod:css', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean:css',
-		'minifyCssPackages'
+		'cssmin:css_packages'
 	]);
+
+	this.registerTask('hint', 'JSHint all files', [
+		'jshint:modules',
+		'jshint:js_packages'
+	]);
+
+	this.registerTask('enable_force', 'Enable force option', function(){
+		grunt.config('jshint.options.force', true);
+	});
 
 
 

@@ -1,5 +1,5 @@
 module.exports = function (grunt) {
-	grunt.registerTask('minifyCssPackages', 'Minify CSS packages', function () {
+	grunt.registerTask('cssmin:css_packages', 'Minify CSS packages', function () {
 		var buildData = grunt.file.readJSON('config/build.json'),
 			cssPackages = grunt.file.readJSON('config/css.packages.json'),
 			cssDistDir = buildData.cssDistDir,
