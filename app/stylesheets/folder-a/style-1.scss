@@ -1,6 +1,13 @@
-body {
-    background: #fafafa;
-    h1 {
-        cursor: pointer;
-    }
+.console {
+    background: #000;
+    border: 3px groove #ccc;
+    color: greenyellow;
+    display: block;
+    padding: 5px;
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    line-height: 1.6;
+    font-size: 30px;
 }

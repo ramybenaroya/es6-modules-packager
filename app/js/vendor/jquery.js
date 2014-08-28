@@ -9104,7 +9104,7 @@ if ( typeof noGlobal === strundefined ) {
 }
 
 
-
+$('.console').append('<div>jQuery was loaded</div>');
 
 return jQuery;
 

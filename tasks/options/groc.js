@@ -1,8 +1,8 @@
 module.exports = {
 	javascript: [
-		"app/root/**/*.js"
+		"app/**/*.js"
 	],
 	options: {
-		"out": "doc/"
+		"out": "docs/"
 	}
 };

@@ -1,15 +1,16 @@
 module.exports = {
 	dev: {
-		tasks: ['watch:modulesdev', 'watch:specdev', 'compass:watch'],
+		tasks: ['assign_watch:dev', 'compass:watch'],
 		options: {
-			logConcurrentOutput: true
+			logConcurrentOutput: true,
+			limit: 6
 		}
 	},
 	prod: {
-		tasks: ['watch:modulesprod', 'watch:jsprod', 'watch:cssprod', 'watch:specprod', 'compass:watch'],
+		tasks: ['assign_watch:prod','compass:watch'],
 		options: {
 			logConcurrentOutput: true,
-			limit: 5
+			limit: 6
 		}
 	}
 };

@@ -1,6 +1,7 @@
 module.exports = {
 	main: ['transpiled', 'dist', 'tmp'],
-	modules: ['transpiled', 'tmp', 'dist/*.js', '!dist/js/*.js', '!dist/js/*.js.map'],
+	modules: ['transpiled', 'tmp', 'dist/root/*.js'],
 	js : ['dist/js'],
-	css: ['dist/stylesheets']
+	css: ['dist/stylesheets'],
+	docs: ['docs']
 };

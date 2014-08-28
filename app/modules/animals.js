@@ -1,18 +1,17 @@
 import mammals from 'animals/mammals';
-/*no-package*/
+/*ignored*/
 import reptiles from 'animals/reptiles';
+import consoleWriter from 'utils/console';
 
+consoleWriter('Animals were loaded');
+export
+default {
+	init: function () {
 
-export default  {
-	init: function(){
-		$(function(){
-			$('button').one('click', function(){
-				mammals.init();
-				require('animals/insects', function(insects){
-					insects['default'].init();	
-				});
-				reptiles.init();	
-			});
+		mammals.init();
+		require('animals/insects', function (insects) {
+			insects['default'].init();
 		});
+		reptiles.init();
 	}
 };

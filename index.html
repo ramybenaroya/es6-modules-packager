@@ -10,31 +10,35 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.14/require.js"></script>
     <script src="/app/loader/loader.js"></script>
     <script src="/dist/require.config.js"></script>
-    
-    <script src="/dist/modules/animals.js"></script>
-    <!-- Should be: 
-		<%@include file="/dist/vendor/vendor-a.js.jspf"%>
-		<%@include file="/dist/stylesheets/css-package-1.css.jspf" %>	
-	But for now we will use: -->
-    <include tag="script" file="dist/js_includes/vendor-a.js.jspf"></include>
-    <!---->
-    <include tag="link" file="dist/css_includes/css-package-1.css.jspf"></include>
-    <!-- -->
-    <script>
-        require(['animals'], function(package, ant) {
-            package['default'].init();
-        });
-        require(['vendor-b'], function() {
-            require(['vendor-b'], function() {
-            debugger;
-        });
-        });
-
-    </script>
 </head>
 
 <body>
+    <div class="console"></div>
     <button>start</button>
+    <!--
+    
+
+
+    -->
+    <!-- JS includes -->
+    <!-- Should be: 
+        <%@include file="/dist/vendor/vendor-a.js.jspf"%>
+        <%@include file="/dist/stylesheets/css-package-1.css.jspf" %>   
+    But for now we will use: -->
+    <include tag="script" file="dist/includers/js/vendor-a.js.jspf"></include>
+    <!---->
+    <include tag="link" file="dist/includers/css/css-package-1.css.jspf"></include>
+    <!-- -->
+    <script src="/dist/modules/animals.js"></script>
+    <script>
+        require(['legacy-1'], function() {});
+        $('button').one('click', function() {
+            require(['animals'], function(package, ant) {
+                package['default'].init();
+            });
+        });
+    </script>
+    <!-- -->
 </body>
 
 </html>

@@ -6,7 +6,7 @@ root-cov
 *.out
 *.pid
 *.gz
-
+docs
 pids
 logs
 results

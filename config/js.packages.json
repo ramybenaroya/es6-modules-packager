@@ -1,4 +1,8 @@
 {
-	"vendor-a": ["vendor/jquery", "vendor/vendor-1", "vendor/vendor-2"],
-	"vendor-b": ["vendor/vendor-1"]
+	"vendor-a": ["vendor/jquery", "vendor/vendor-a1", "vendor/vendor-a2", "vendor-b"],
+	"vendor-b" : ["vendor/vendor-b1", "vendor/vendor-b2", "vendor/vendor-b3"],
+	"legacy-1": ["legacy-1"],
+	"legacy-2a" : ["legacy-2a"],
+	"legacy-2b" : ["legacy-2b"],
+	"legacy-2c" : ["legacy-2c"]
 }

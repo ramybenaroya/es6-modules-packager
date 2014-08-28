@@ -17,10 +17,10 @@ module.exports = function (grunt) {
 					files[jsDistDir + '/' + jsPackage + '.js'] = src;
 				}
 
-				function analyze(ven, array) {
-					if (jsPackages[ven]) {
-						jsPackages[ven].forEach(function (sub) {
-							if (jsPackages[sub]) {
+				function analyze(jsPackage, array) {
+					if (jsPackages[jsPackage]) {
+						jsPackages[jsPackage].forEach(function (sub) {
+							if (jsPackages[sub] && jsPackages[sub] !== jsPackages[jsPackage]) {
 								analyze(sub, array);
 							} else {
 								array.push(jsSrcDir + '/' + sub + '.js');

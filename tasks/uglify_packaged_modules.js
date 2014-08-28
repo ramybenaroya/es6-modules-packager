@@ -13,7 +13,7 @@ module.exports = function (grunt) {
 			Compiler = require("grunt-es6-module-transpiler/node_modules/es6-module-transpiler/dist/es6-module-transpiler").Compiler,
 			getDeps = function (module) {
 				var compiler, deps, compiled, matchesArray, index,
-					reg = /\/\*no-package\*\/.*?__dependency(\d+?)__\[/g,
+					reg = /\/\*ignored\*\/.*?__dependency(\d+?)__\[/g,
 					ignoredByComment = {};
 				try {
 					compiler = new Compiler(grunt.file.read(modulesSrcDir + '/' + module + '.js'), module, {

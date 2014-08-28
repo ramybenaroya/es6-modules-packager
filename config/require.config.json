@@ -4,8 +4,8 @@
 
 	},
 	"shim": {
-		"aaa": {
-			"deps": ["bbb"]
+		"legacy-1": {
+			"deps": ["legacy-2a", "legacy-2b", "legacy-2c"]
 		}
 	}
 }

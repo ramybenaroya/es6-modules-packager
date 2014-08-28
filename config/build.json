@@ -6,9 +6,10 @@
 	"jsDistDir": "dist/js",
 	"cssSrcDir": "app/stylesheets",
 	"cssDistDir": "dist/stylesheets",
-	"jsIncludersDistDir": "dist/js_includes",
-	"cssIncludersDistDir": "dist/css_includes",
+	"jsIncludersDistDir": "dist/includers/js",
+	"cssIncludersDistDir": "dist/includers/css",
 	"includerExtension" : "jspf",
 	"requireConfigDistDir" : "dist",
-	"tempDir" : "tmp"
+	"tempDir" : "tmp",
+	"livereload" : true
 }

@@ -98,7 +98,7 @@ module.exports = function (grunt) {
 	// Custom Node test task
 	this.registerTask('test', ['build', 'tests', 'mochaTest']);
 
-	this.registerTask('docs', ['groc']);
+	this.registerTask('docs', ['clean:docs', 'groc']);
 
 	config.env = process.env;
 	config.pkg = grunt.file.readJSON('package.json');
