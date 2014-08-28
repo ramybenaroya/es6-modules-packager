@@ -1,7 +1,8 @@
 module.exports = function (grunt) {
 	var moment = require('moment'),
 		cheerio = require('cheerio'),
-		beautify = require('js-beautify').html_beautify;
+		beautify = require('js-beautify').html_beautify,
+		livereloadDefaultPort = 35729;
 	grunt.registerTask('generate_includers:js:dev', 'create an includer file for loading all js packages scripts synchrounsly', function () {
 		var buildData = grunt.file.readJSON('config/build.json'),
 			jsPackages = grunt.file.readJSON('config/js.packages.json'),
@@ -9,7 +10,6 @@ module.exports = function (grunt) {
 			includerExtension = buildData.includerExtension,
 			jsSrcDir = buildData.jsSrcDir,
 			processedPackages = {},
-			livereloadDefaultPort = 35729,
 			jsPackage,
 			output, length, i;
 		processJsPackages();
@@ -25,15 +25,11 @@ module.exports = function (grunt) {
 		}
 
 		function appendScriptPrefix(output, jsPackage, filesList) {
-			var livereloadPort = buildData.livereload !== false ? (buildData.livereload === true ? livereloadDefaultPort : buildData.livereload) : false;
 			output.push('<!--This is an auto-generated file for development environment');
 			output.push('\tPackage Name:\t\t\t' + jsPackage);
 			output.push('\tTotal Included Files:\t' + filesList.length);
 			output.push('\tGenerated at:\t\t\t' + moment().format('MMMM Do YYYY, h:mm:ss a'));
 			output.push('-->');
-			if (livereloadPort){
-				output.push('<script generated="" src="//localhost:' + livereloadPort + '/livereload.js"></script>')	
-			}
 		}
 
 		function appendScriptSuffix(output) {}
@@ -160,6 +156,33 @@ module.exports = function (grunt) {
 		function appendScriptSuffix(output) {}
 	});
 
+	grunt.registerTask('generate_includers:livereload', 'create an includer file for livereload', function () {
+		var buildData = grunt.file.readJSON('config/build.json'),
+			includerExtension = buildData.includerExtension,
+			livereloadIncluderDistDir = buildData.livereloadIncluderDistDir,
+			livereloadPort = buildData.livereload !== false ? (buildData.livereload === true ? livereloadDefaultPort : buildData.livereload) : false,
+			output = [];
+		if (livereloadPort) {
+			output.push('<script generated="" src="//localhost:' + livereloadPort + '/livereload.js"></script>')
+		}
+		grunt.file.write(livereloadIncluderDistDir + '/livereload.' + includerExtension, grunt.template.process(output.join('\n')));
+
+		function appendScriptPrefix(output) {}
+
+		function appendScriptSuffix(output) {}
+	});
+
+	grunt.registerTask('generate_includers:livereload:empty', 'create an empty includer file livereload', function () {
+		var buildData = grunt.file.readJSON('config/build.json'),
+			includerExtension = buildData.includerExtension,
+			livereloadIncluderDistDir = buildData.livereloadIncluderDistDir;
+		grunt.file.write(livereloadIncluderDistDir + '/livereload.' + includerExtension, grunt.template.process(''));
+
+		function appendScriptPrefix(output) {}
+
+		function appendScriptSuffix(output) {}
+	});
+
 	grunt.registerTask('generate_includers:html', 'Append includers', function () {
 		var html = grunt.file.read('index.html');
 		$ = cheerio.load(html);
@@ -171,9 +194,17 @@ module.exports = function (grunt) {
 				.replace(/<%=(.*)%>/g, '')
 				.replace(/(\r\n|\n|\r)/gm, "")
 				.replace(/<!--This is an auto-generated file for development environment(.*)-->/g, '');
-			$(tag + '[generated]').remove()
 			$includer.after('\n' + file + '\n');
 		});
+		grunt.file.write('index.html', beautify($.html(), {
+			preserve_newlines: false
+		}));
+	});
+
+	grunt.registerTask('generate_includers:clean', 'Clean html', function () {
+		var html = grunt.file.read('index.html');
+		$ = cheerio.load(html);
+		$('[generated]').remove()
 		grunt.file.write('index.html', beautify($.html(), {
 			preserve_newlines: false
 		}));

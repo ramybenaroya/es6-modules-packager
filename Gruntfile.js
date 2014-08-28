@@ -27,6 +27,7 @@ module.exports = function (grunt) {
 	// Build a new version of the modules
 	this.registerTask('build:prod', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean',
+		'generate_includers:livereload',
 		'jshint',
 		'transpile:prod',
 		'uglifyModules',
@@ -37,35 +38,42 @@ module.exports = function (grunt) {
 		'minifyCssPackages',
 		'generate_includers:css:prod',
 		'generateRequireConfig:prod',
+		'generate_includers:clean',
 		'generate_includers:html'
 	]);
 	this.registerTask('build:prod:spec', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean',
+		'generate_includers:livereload',
 		'build:prod:modules',
 		'uglifyJsPackages',
 		'generate_includers:js:prod',
 		'minifyCssPackages',
 		'generate_includers:css:prod',
 		'generateRequireConfig:prod',
+		'generate_includers:clean',
 		'generate_includers:html'
 	]);
 
 	this.registerTask('build:dev', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean',
+		'generate_includers:livereload',
 		'jshint',
 		'transpile:dev',
 		'generate_includers:js:dev',
 		'compass:compile',
 		'generate_includers:css:dev',
 		'generateRequireConfig:dev',
+		'generate_includers:clean',
 		'generate_includers:html'
 	]);
 	this.registerTask('build:dev:spec', 'Builds a distributable version of <%= cfg.name %>', [
 		'clean',
+		'generate_includers:livereload',
 		'build:dev:modules',
 		'generate_includers:js:dev',
 		'generate_includers:css:dev',
 		'generateRequireConfig:dev',
+		'generate_includers:clean',
 		'generate_includers:html'
 	]);
 	this.registerTask('build:dev:modules', 'Builds a distributable version of <%= cfg.name %>', [

@@ -8,6 +8,7 @@
 	"cssDistDir": "dist/stylesheets",
 	"jsIncludersDistDir": "dist/includers/js",
 	"cssIncludersDistDir": "dist/includers/css",
+	"livereloadIncluderDistDir" : "dist/includers/livereload",
 	"includerExtension" : "jspf",
 	"requireConfigDistDir" : "dist",
 	"tempDir" : "tmp",

@@ -22,14 +22,16 @@
     -->
     <!-- JS includes -->
     <!-- Should be: 
-        <%@include file="/dist/vendor/vendor-a.js.jspf"%>
-        <%@include file="/dist/stylesheets/css-package-1.css.jspf" %>   
+        <%@include file="/dist/includers/livereload/livereload.jspf" %> 
+        <%@include file="/dist/includers/js/vendor-a.js.jspf"%>
+        <%@include file="/dist/includers/css/css-package-1.css.jspf" %>   
     But for now we will use: -->
+    <include tag="link" file="dist/includers/livereload/livereload.jspf"></include>
+    <!---->
     <include tag="script" file="dist/includers/js/vendor-a.js.jspf"></include>
     <!---->
     <include tag="link" file="dist/includers/css/css-package-1.css.jspf"></include>
     <!-- -->
-    <script src="/dist/modules/animals.js"></script>
     <script>
         require(['legacy-1'], function() {});
         $('button').one('click', function() {
