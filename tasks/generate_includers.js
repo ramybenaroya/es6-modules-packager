@@ -184,7 +184,7 @@ module.exports = function (grunt) {
 	});
 
 	grunt.registerTask('generate_includers:html', 'Append includers', function () {
-		var html = grunt.file.read('index.html');
+		var html = grunt.file.read('app/index.html');
 		$ = cheerio.load(html);
 		$('include[file]').each(function (i, includer) {
 			var $includer = $(includer),

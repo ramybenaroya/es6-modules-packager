@@ -1,8 +1,6 @@
 {
 	"waitSeconds": 30,
-	"paths": {
-
-	},
+	"paths": {},
 	"shim": {
 		"legacy-1": {
 			"deps": ["legacy-2a", "legacy-2b", "legacy-2c"]

@@ -3,7 +3,7 @@ module.exports = function (grunt) {
 	var buildData  = grunt.file.readJSON('config/build.json'),
 		devWatchTargets = {
 			specdev: {
-				files: ['config/**/*.json'],
+				files: ['config/**/*.json', 'app/index.html'],
 				tasks: ['build:dev:spec']
 			},
 			modulesdev: {

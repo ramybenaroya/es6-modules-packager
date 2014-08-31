@@ -40,7 +40,6 @@ module.exports = function (grunt) {
 		'cssmin:css_packages',
 		'generate_includers:css:prod',
 		'generateRequireConfig:prod',
-		'generate_includers:clean',
 		'generate_includers:html'
 	]);
 	this.registerTask('build:prod:spec', 'Builds a distributable version of <%= cfg.name %>', [
@@ -54,7 +53,6 @@ module.exports = function (grunt) {
 		'cssmin:css_packages',
 		'generate_includers:css:prod',
 		'generateRequireConfig:prod',
-		'generate_includers:clean',
 		'generate_includers:html'
 	]);
 
@@ -67,7 +65,6 @@ module.exports = function (grunt) {
 		'compass:compile',
 		'generate_includers:css:dev',
 		'generateRequireConfig:dev',
-		'generate_includers:clean',
 		'generate_includers:html'
 	]);
 	this.registerTask('build:dev:spec', 'Builds a distributable version of <%= cfg.name %>', [
@@ -79,7 +76,6 @@ module.exports = function (grunt) {
 		'generate_includers:js:dev',
 		'generate_includers:css:dev',
 		'generateRequireConfig:dev',
-		'generate_includers:clean',
 		'generate_includers:html'
 	]);
 	this.registerTask('build:dev:modules', 'Builds a distributable version of <%= cfg.name %>', [
@@ -130,7 +126,7 @@ module.exports = function (grunt) {
 	// Custom Node test task
 	this.registerTask('test', ['build', 'tests', 'mochaTest']);
 
-	this.registerTask('docs', ['clean:docs', 'groc']);
+	this.registerTask('docs', ['clean:docs', 'grock']);
 
 	config.env = process.env;
 	config.pkg = grunt.file.readJSON('package.json');
@@ -138,7 +134,7 @@ module.exports = function (grunt) {
 
 	// Load custom tasks from NPM
 	grunt.loadNpmTasks('grunt-mocha-test');
-	grunt.loadNpmTasks('grunt-groc');
+	grunt.loadNpmTasks('grunt-grock');
 	grunt.loadNpmTasks('grunt-concurrent');
 	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
