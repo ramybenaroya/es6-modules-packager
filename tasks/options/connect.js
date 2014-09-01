@@ -10,7 +10,7 @@ module.exports = {
         require('connect-redirection')(),
         function (req, res, next) {
           if (req.url === '/') {
-            res.redirect('/test');
+            res.redirect('/index.html');
           } else {
             next();
           }

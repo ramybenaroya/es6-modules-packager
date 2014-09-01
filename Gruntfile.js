@@ -40,6 +40,7 @@ module.exports = function (grunt) {
 		'cssmin:css_packages',
 		'generate_includers:css:prod',
 		'generateRequireConfig:prod',
+		'generate_resources_params_includer:prod',
 		'generate_includers:html'
 	]);
 	this.registerTask('build:prod:spec', 'Builds a distributable version of <%= cfg.name %>', [
@@ -53,6 +54,7 @@ module.exports = function (grunt) {
 		'cssmin:css_packages',
 		'generate_includers:css:prod',
 		'generateRequireConfig:prod',
+		'generate_resources_params_includer:prod',
 		'generate_includers:html'
 	]);
 
@@ -65,6 +67,7 @@ module.exports = function (grunt) {
 		'compass:compile',
 		'generate_includers:css:dev',
 		'generateRequireConfig:dev',
+		'generate_resources_params_includer:dev',
 		'generate_includers:html'
 	]);
 	this.registerTask('build:dev:spec', 'Builds a distributable version of <%= cfg.name %>', [
@@ -76,6 +79,7 @@ module.exports = function (grunt) {
 		'generate_includers:js:dev',
 		'generate_includers:css:dev',
 		'generateRequireConfig:dev',
+		'generate_resources_params_includer:dev',
 		'generate_includers:html'
 	]);
 	this.registerTask('build:dev:modules', 'Builds a distributable version of <%= cfg.name %>', [
