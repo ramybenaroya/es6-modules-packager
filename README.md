@@ -1,6 +1,6 @@
 ES6 Modules Packager
 
-First run
+First run:
 ```shell
 $ npm install
 ```
