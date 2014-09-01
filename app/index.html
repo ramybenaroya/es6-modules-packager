@@ -26,14 +26,16 @@
         <%@include file="/dist/includers/js/vendor-a.js.jspf"%>
         <%@include file="/dist/includers/stylesheets/css-package-1.css.jspf" %>   
     But for now we will use: -->
-    <include tag="link" file="dist/includers/livereload/livereload.jspf"></include>
+    <include file="dist/includers/livereload/livereload.jspf"></include>
     <!---->
-    <include tag="script" file="dist/includers/js/vendor-a.js.jspf"></include>
+    <include file="dist/includers/js/vendor-a.js.jspf"></include>
     <!---->
-    <include tag="link" file="dist/includers/stylesheets/css-package-1.css.jspf"></include>
+    <include file="dist/includers/stylesheets/css-package-1.css.jspf"></include>
     <!-- -->
+    <script>
+       require(['legacy-1'], function() {});
+    </script>
     <!-- <script>
-        require(['legacy-1'], function() {});
         $('button').one('click', function() {
             require(['animals'], function(package, ant) {
                 package['default'].init();

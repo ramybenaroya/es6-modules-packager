@@ -188,7 +188,7 @@ module.exports = function (grunt) {
 		function appendScriptSuffix(output) {}
 	});
 
-	grunt.registerTask('generate_resources_params_includer:dev', 'Create an includer for defining variables in jsp', function () {
+	grunt.registerTask('generate_resources_params_includer:prod', 'Create an includer for defining variables in jsp', function () {
 		var buildData = grunt.file.readJSON('config/build.json'),
 			includerExtension = buildData.includerExtension,
 			resourcesQueryParamsIncluderDistDir = buildData.resourcesQueryParamsIncluderDistDir,
